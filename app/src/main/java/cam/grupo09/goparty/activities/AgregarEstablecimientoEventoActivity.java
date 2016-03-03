@@ -87,6 +87,7 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
         if (posSeleccionada >= 0) {
             Intent n = new Intent(this, VerEstablecimientosActivity.class);
             n.putExtra("establecimiento", lstResultados.getItemAtPosition(posSeleccionada).toString());
+            startActivity(n);
         }
     }
 
