@@ -10,7 +10,7 @@ import cam.grupo09.goparty.Enumerables.EstadoInvitacion;
  */
 public class Invitacion implements Serializable
 {
-
+    private static final long serialVersionUID = 0L;
     /**
      * Información del usuario al que se le envía la invitación.
      */

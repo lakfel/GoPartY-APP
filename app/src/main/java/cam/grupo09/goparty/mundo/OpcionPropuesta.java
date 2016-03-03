@@ -1,11 +1,14 @@
 package cam.grupo09.goparty.mundo;
 
+import java.io.Serializable;
+
 /**
  * Created by Felipe on 29/02/2016.
  * Clase que representa una opción propuesta de manera genérica. Es decir para cualquier tipo de dato.
  */
-public class OpcionPropuesta <T>
+public class OpcionPropuesta <T > implements Serializable
 {
+    private static final long serialVersionUID = 0L;
     /**
      * Cantidad de votos a favor
      */

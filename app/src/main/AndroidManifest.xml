@@ -3,6 +3,12 @@
     package="cam.grupo09.goparty">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -27,6 +33,17 @@
         <activity
             android:name=".activities.AgregarEstablecimientoEventoActivity"
             android:label="@string/title_activity_agregar_establecimiento_evento"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <receiver android:name=".persistencia.LeerSMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".activities.VerEstablecimientosActivity"
+            android:label="@string/title_activity_ver_establecimiento"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -19,6 +19,7 @@
     <string name="title_activity_agregar_establecimiento_evento">
         AgregarEstablecimientoEventoActivity
     </string>
+    <string name="title_activity_ver_establecimiento">VerEstablecimientoActivity</string>
 
 
 </resources>

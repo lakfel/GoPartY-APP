@@ -12,6 +12,7 @@ import cam.grupo09.goparty.Enumerables.TipoMusica;
  */
 public class Establecimiento implements Serializable
 {
+    private static final long serialVersionUID = 0L;
     /**
      * Nombre del establecimiento
      */

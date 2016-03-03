@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +73,8 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
 
                 //Todo desplegar la pantalla de información.
                 posSeleccionada = position2;
+
+
                 Log.d("Guardando numero", "Numero : " + posSeleccionada);
             }
 
@@ -84,22 +83,25 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
 
     }
 
+    public void visitarEstablecimiento(View view) {
+        if (posSeleccionada >= 0) {
+            Intent n = new Intent(this, VerEstablecimientosActivity.class);
+            n.putExtra("establecimiento", lstResultados.getItemAtPosition(posSeleccionada).toString());
+        }
+    }
 
     public void agregarEstablecimientoAlEvento(View view) {
         if (posSeleccionada >= 0) {
             Establecimiento est = (Establecimiento) lstResultados.getItemAtPosition(posSeleccionada);
             Evento ev = GoPartY.getInstance().getEventoActual();
             if (ev != null) {
-                if (!ev.estaEstablecimento(est.getNombre()))
-                {
+                if (!ev.estaEstablecimento(est.getNombre())) {
                     Log.d("Agregando ", est.getNombre());
                     ev.getEstablecimientosPropuestos().add(new OpcionPropuesta<Establecimiento>(est));
 
-                    showDialog("Nuevo establecimiento","Se agregó el establecimiento " + est.getNombre());
-                }
-                else
-                {
-                    showDialog("Nuevo establecimiento","El establecimiento " + est.getNombre()+ "ya se había propuesto en este evento");
+                    showDialog("Nuevo establecimiento", "Se agregó el establecimiento " + est.getNombre());
+                } else {
+                    showDialog("Nuevo establecimiento", "El establecimiento " + est.getNombre() + "ya se había propuesto en este evento");
                 }
             }
         }
@@ -111,12 +113,12 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
         alertDialog.setTitle(title);
         alertDialog.setCancelable(false);
         alertDialog.setMessage(message);
-        alertDialog.setPositiveButton("OK",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
 
             }
         });
-        AlertDialog dialog= alertDialog.create();
+        AlertDialog dialog = alertDialog.create();
         dialog.show();
 
     }
@@ -130,4 +132,10 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
         lstResultados.setAdapter(adapter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        GoPartY.getInstance().guardar();
+
+    }
 }

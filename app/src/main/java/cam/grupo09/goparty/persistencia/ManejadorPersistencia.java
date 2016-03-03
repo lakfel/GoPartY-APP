@@ -1,10 +1,15 @@
 package cam.grupo09.goparty.persistencia;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import cam.grupo09.goparty.activities.MainActivity;
 import cam.grupo09.goparty.mundo.Establecimiento;
 import cam.grupo09.goparty.mundo.Evento;
 import cam.grupo09.goparty.Enumerables.TipoBebida;
@@ -17,26 +22,57 @@ public class ManejadorPersistencia
 {
 
     // A futuro se va a manejar con SQLite. Por ahora se hará con objetos serializables.
-    private static final String NOMBRE_ARCHIVO = "persistenciaGoPartyF.txt";
+    private static final String NOMBRE_ARCHIVO =  "persistenciaGoPartyF.data";
+    private  File PATH_ARCHIVO;
 
     private ArrayList<Evento> eventos;
     private ArrayList<Establecimiento> establecimientos;
 
 
 
-
-    public ManejadorPersistencia ()
+    public void setPath(File pPath)
     {
-        cargarInfor();
+        PATH_ARCHIVO = pPath;
+    }
+
+
+    public void     guardarInfo()
+    {
+        Log.d("ManejadorPersistencia","Guardando");
+        try
+        {
+            File archivo = new File(PATH_ARCHIVO,NOMBRE_ARCHIVO);
+            if(!archivo.exists())
+                archivo.createNewFile();
+            Log.d("ManejadorPersistencia","Escribiendo elementos" +PATH_ARCHIVO+"-"+NOMBRE_ARCHIVO );
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo));
+            Log.d("ManejadorPersistencia", "Eventos guardado");
+                oos.writeObject(eventos);
+            Log.d("ManejadorPersistencia", "Eventos guardado");
+                oos.writeObject(establecimientos);
+            Log.d("ManejadorPersistencia", "Establecimientos guardado");
+                oos.close();
+            File ar2 = new File(PATH_ARCHIVO,NOMBRE_ARCHIVO);
+            Log.d("Manejador", "Archivo existente : " + ar2.exists());
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void cargarInfor()
     {
+        Log.d("ManejadorPersistencia", "Cargando");
         try
         {
-            File archivo = new File(NOMBRE_ARCHIVO);
+            File archivo = new File(PATH_ARCHIVO, NOMBRE_ARCHIVO);
+            Log.d("ManejadorPersistencia", "Consulta del archivo path : " +PATH_ARCHIVO+"-"+NOMBRE_ARCHIVO );
             if(archivo.exists())
             {
+                Log.d("ManejadorPersistencia", "Archivo existe");
+                Log.d("ManejadorPersistencia", "File " + PATH_ARCHIVO.exists());
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo));
                 eventos = (ArrayList<Evento>)ois.readObject();
                 establecimientos = (ArrayList<Establecimiento>)ois.readObject();
@@ -44,7 +80,8 @@ public class ManejadorPersistencia
             }
             else
             {
-
+                Log.d("ManejadorPersistencia", "Archivo no existe");
+                Log.d("ManejadorPersistencia", "File " + PATH_ARCHIVO.exists());
                 eventos = new ArrayList<Evento>();
                 establecimientos = new ArrayList<Establecimiento>();
                 poblarInfo();

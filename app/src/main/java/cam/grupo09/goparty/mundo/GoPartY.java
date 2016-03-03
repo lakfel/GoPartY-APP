@@ -1,6 +1,7 @@
 package cam.grupo09.goparty.mundo;
 
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -12,14 +13,14 @@ import cam.grupo09.goparty.persistencia.ManejadorPersistencia;
  * Created by Felipe on 29/02/2016.
  * Clase principal que maneja y administra el programa.
  */
-public class GoPartY
-{
+public class GoPartY {
 
     private static GoPartY instance;
 
 
     private ManejadorPersistencia manejadorPersistencia;
     private Evento eventoActual;
+
 
 
     public static GoPartY getInstance()
@@ -31,6 +32,11 @@ public class GoPartY
         return instance;
     }
 
+
+    public void guardar()
+    {
+        manejadorPersistencia.guardarInfo();
+    }
 
     public void empezarEventoActivity()
     {

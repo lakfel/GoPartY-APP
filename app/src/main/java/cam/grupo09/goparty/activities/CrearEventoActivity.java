@@ -14,8 +14,11 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -27,6 +30,7 @@ import android.widget.TimePicker;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -37,6 +41,7 @@ import cam.grupo09.goparty.mundo.GoPartY;
 import cam.grupo09.goparty.mundo.Invitacion;
 import cam.grupo09.goparty.mundo.LugarPrevia;
 import cam.grupo09.goparty.mundo.OpcionPropuesta;
+import cam.grupo09.goparty.persistencia.LeerSMS;
 
 public class CrearEventoActivity extends AppCompatActivity {
 
@@ -68,13 +73,99 @@ public class CrearEventoActivity extends AppCompatActivity {
         lstInvitaciones = (ListView) findViewById(R.id.lstInvitaciones);
         lstHorasPrev = (ListView)findViewById(R.id.lstHorasPrevias);
         lstEstablecimiento = (ListView)findViewById(R.id.lstEstablecimientos);
-        lstLgares = (ListView)findViewById(R.id.lstEstablecimientos);
+        lstLgares = (ListView)findViewById(R.id.lstLugares);
         lstHorasSal = (ListView)findViewById(R.id.lstHoraSal);
+
+
     }
 
     @Override
-    protected void onResume() {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == R.id.action_settings) {
+            GoPartY.getInstance().getEventoActual().setNombreEvento(txtNombreEvento.getText().toString());
+            confirmarCreacionEvento();
+            showDialog("Evento", "El evento fue guardado");
+            GoPartY.getInstance().empezarEventoActivity();
+            actualizarPantalla();
+        }
+            else
+        {
+
+            String fechasS = "";
+            OpcionPropuesta<Date>[] fs = GoPartY.getInstance().getEventoActual().darFechasPrpoestas();
+            SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
+            fechasS = sf.format(fs[0].getOpcion());
+            for (int i = 1; i < fs.length; i++) {
+                fechasS += ";" + sf.format(fs[i].getOpcion());
+            }
+
+            String horasS = "";
+            OpcionPropuesta<String>[] hs = GoPartY.getInstance().getEventoActual().darHorasPreviaPropuestas();
+            horasS = hs[0].toString();
+            for (int i = 1; i < hs.length; i++) {
+                horasS += ";" + hs[i];
+            }
+
+            String lugares = "";
+            OpcionPropuesta<Establecimiento>[] ls = GoPartY.getInstance().getEventoActual().darEstablecimientosPropuestos();
+            lugares = ls[0].toString();
+            for (int i = 1; i < ls.length; i++) {
+                lugares += ";" + ls[i];
+            }
+            ArrayList<Invitacion> invitaciones = GoPartY.getInstance().getEventoActual().getInvitaciones();
+            Evento e = GoPartY.getInstance().getEventoActual();
+            for (Invitacion a: invitaciones)
+            {
+                Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+                String[] columnas = {ContactsContract.CommonDataKinds.Phone.NUMBER};
+                String seleccion = ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY + "='" + a.getIdentificadorInvitado() + "'";
+                Cursor c = getContentResolver().query(phoneUri,columnas,seleccion,null, null );
+                String numeroTelefonico;
+
+                if(c.moveToFirst()){
+                    numeroTelefonico = c.getString(0);
+                    TelephonyManager tMgr = (TelephonyManager)getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+                    String mPhoneNumber = tMgr.getLine1Number();
+
+                    String msn = "GoPartY-" + mPhoneNumber+"-"+e.getNombreEvento()+"-"+fechasS+"-"+horasS+"-"+lugares;
+                    LeerSMS.getInstance().enviarSMS(msn,numeroTelefonico);
+                }
+
+            }
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void showDialog(String title, String message) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(title);
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+
+            }
+        });
+        AlertDialog dialog= alertDialog.create();
+        dialog.show();
+
+    }
+
+    public void confirmarCreacionEvento()
+    {
+        GoPartY.getInstance().getEventoActual().setNombreEvento(txtNombreEvento.getText().toString());
+        GoPartY.getInstance().crearEvento();
+    }
+
+    @Override
+    protected void onResume()
+    {
         super.onResume();
+
         evento = GoPartY.getInstance().getEventoActual();
         if(evento == null)
             evento = new Evento();
@@ -118,19 +209,19 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     public void agregarLugarPrevia(View view)
     {
-        Context context = getApplicationContext();
-        LinearLayout layout = new LinearLayout(context);
+
+        LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        final EditText nombreBox = new EditText(context);
+        final EditText nombreBox = new EditText(this);
         nombreBox.setHint("Nombre");
         layout.addView(nombreBox);
 
-        final EditText direccionBox = new EditText(context);
+        final EditText direccionBox = new EditText(this);
         direccionBox.setHint("Direccion");
         layout.addView(direccionBox);
 
-        final EditText descriptionBox = new EditText(context);
+        final EditText descriptionBox = new EditText(this);
         descriptionBox.setHint("Description");
         layout.addView(descriptionBox);
 
@@ -151,6 +242,13 @@ public class CrearEventoActivity extends AppCompatActivity {
 
 
         dialog.setView(layout);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+         super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_crear_evento, menu);
+        return true;
     }
 
     public void actualizarPantalla() {
@@ -259,7 +357,7 @@ public class CrearEventoActivity extends AppCompatActivity {
         public void onDestroy()
         {
             super.onDestroy();
-            if(hora >= 0 && hora < 4)
+            if(hora >= 0 && hora < 24)
             {
                 if(tipoHora == 1)
                 {
@@ -307,9 +405,10 @@ public class CrearEventoActivity extends AppCompatActivity {
             super.onDestroy();
             if (dia > 0 && dia <= 31) {
                 Calendar c = Calendar.getInstance();
+
                 c.set(ano, mes, dia);
                 Date seleccionada = new Date(c.getTimeInMillis());
-                puente.addFecha(seleccionada);
+                puente.addFecha(c.getTime());
             }
         }
 
@@ -317,9 +416,17 @@ public class CrearEventoActivity extends AppCompatActivity {
             dia = day;
             mes = month;
             ano = year;
+            Log.d("FECHA",dia + "-" + mes + "-" + ano);
             // Do something with the date chosen by the user
         }
     }
 
+    @Override
+    protected void onDestroy()
+    {
+
+        super.onDestroy();
+        GoPartY.getInstance().guardar();
+    }
 
 }

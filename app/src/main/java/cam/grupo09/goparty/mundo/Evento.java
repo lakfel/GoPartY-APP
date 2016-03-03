@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class Evento implements Serializable
 {
-
+    private static final long serialVersionUID = 0L;
     /**
      * Identificador del evento
      */
@@ -242,4 +242,9 @@ public class Evento implements Serializable
             return false;
         }
 
+
+    @Override
+    public String toString() {
+        return "Evento : " + nombreEvento;
+    }
 }

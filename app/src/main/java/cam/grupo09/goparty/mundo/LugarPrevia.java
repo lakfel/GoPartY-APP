@@ -1,11 +1,14 @@
 package cam.grupo09.goparty.mundo;
 
+import java.io.Serializable;
+
 /**
  * Created by Felipe on 02/03/2016.
  * Define donde será el lugar de la previa.
  */
-public class LugarPrevia
+public class LugarPrevia implements Serializable
 {
+    private static final long serialVersionUID = 0L;
     /**
      * El nombre del lugar
      */
