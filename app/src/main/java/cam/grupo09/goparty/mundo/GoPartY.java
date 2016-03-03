@@ -28,21 +28,37 @@ public class GoPartY
     }
 
 
-    public void crearEventoActivity()
+    public void empezarEventoActivity()
     {
         eventoActual = new Evento();
     }
-
 
     public GoPartY()
     {
         manejadorPersistencia = new ManejadorPersistencia();
     }
 
-
-
     public ManejadorPersistencia getManejadorPersistencia()
     {
         return manejadorPersistencia;
+    }
+
+    public Evento getEventoActual()
+    {
+        return eventoActual;
+    }
+
+    public void setEventoActual(Evento eventoActual)
+    {
+        this.eventoActual = eventoActual;
+    }
+
+    public void crearEvento()
+    {
+        if(eventoActual != null)
+        {
+            manejadorPersistencia.getEventos().add(eventoActual);
+            eventoActual = null;
+        }
     }
 }

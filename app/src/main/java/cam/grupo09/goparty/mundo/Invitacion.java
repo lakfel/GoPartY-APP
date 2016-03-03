@@ -16,14 +16,46 @@ public class Invitacion implements Serializable
      */
     private String identificadorInvitado;
 
+    private String nombre;
+
     /**
      * Representa el estado de la invitación.
      */
-    Enum<EstadoInvitacion> estado;
+    private Enum<EstadoInvitacion> estado;
 
-    public Invitacion(String invitado)
+    public Invitacion(String invitado, String nombre)
     {
         this.identificadorInvitado = invitado;
+        this.nombre = nombre;
         estado = EstadoInvitacion.SIN_ENVIAR;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getIdentificadorInvitado() {
+        return identificadorInvitado;
+    }
+
+    public void setIdentificadorInvitado(String identificadorInvitado) {
+        this.identificadorInvitado = identificadorInvitado;
+    }
+
+    public void setEstado(Enum<EstadoInvitacion> estado) {
+        this.estado = estado;
+    }
+
+    public Enum<EstadoInvitacion> getEstado() {
+        return estado;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

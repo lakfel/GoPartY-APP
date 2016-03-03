@@ -57,6 +57,21 @@ public class ManejadorPersistencia
         }
     }
 
+    public ArrayList<Evento> getEventos() {
+        return eventos;
+    }
+
+    public void setEventos(ArrayList<Evento> eventos) {
+        this.eventos = eventos;
+    }
+
+    public ArrayList<Establecimiento> getEstablecimientos() {
+        return establecimientos;
+    }
+
+    public void setEstablecimientos(ArrayList<Establecimiento> establecimientos) {
+        this.establecimientos = establecimientos;
+    }
 
     public void poblarInfo()
     {
