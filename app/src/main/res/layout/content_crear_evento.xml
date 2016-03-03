@@ -239,7 +239,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical|center_horizontal"
-                    android:onClick="showDatePickerDialog"
+                    android:onClick="agregarEstablecimiento"
                     android:text="Agregar" />
             </LinearLayout>
 

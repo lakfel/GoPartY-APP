@@ -17,7 +17,7 @@ public class ManejadorPersistencia
 {
 
     // A futuro se va a manejar con SQLite. Por ahora se hará con objetos serializables.
-    private static final String NOMBRE_ARCHIVO = "persistenciaGoParty.data";
+    private static final String NOMBRE_ARCHIVO = "persistenciaGoPartyF.txt";
 
     private ArrayList<Evento> eventos;
     private ArrayList<Establecimiento> establecimientos;
@@ -27,7 +27,7 @@ public class ManejadorPersistencia
 
     public ManejadorPersistencia ()
     {
-
+        cargarInfor();
     }
 
     public void cargarInfor()
@@ -44,7 +44,7 @@ public class ManejadorPersistencia
             }
             else
             {
-                archivo.createNewFile();
+
                 eventos = new ArrayList<Evento>();
                 establecimientos = new ArrayList<Establecimiento>();
                 poblarInfo();
@@ -53,6 +53,9 @@ public class ManejadorPersistencia
         }
         catch (Exception e)
         {
+            eventos = new ArrayList<Evento>();
+            establecimientos = new ArrayList<Establecimiento>();
+            poblarInfo();
             e.printStackTrace();
         }
     }
@@ -71,6 +74,17 @@ public class ManejadorPersistencia
 
     public void setEstablecimientos(ArrayList<Establecimiento> establecimientos) {
         this.establecimientos = establecimientos;
+    }
+
+
+    public Establecimiento darEtablecimientoNombre(String nombre)
+    {
+        for (Establecimiento a: establecimientos  )
+        {
+            if(a.getNombre().equals(nombre))
+                return a;
+        }
+        return null;
     }
 
     public void poblarInfo()

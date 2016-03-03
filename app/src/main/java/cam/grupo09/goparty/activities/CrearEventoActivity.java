@@ -28,6 +28,7 @@ import java.util.Date;
 
 import cam.grupo09.goparty.R;
 import cam.grupo09.goparty.mundo.Evento;
+import cam.grupo09.goparty.mundo.GoPartY;
 import cam.grupo09.goparty.mundo.Invitacion;
 import cam.grupo09.goparty.mundo.OpcionPropuesta;
 
@@ -60,6 +61,13 @@ public class CrearEventoActivity extends AppCompatActivity {
         lstHorasPrev = (ListView)findViewById(R.id.lstHorasPrevias);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        evento = GoPartY.getInstance().getEventoActual();
+        if(evento == null)
+            evento = new Evento();
+    }
 
     public void showDatePickerDialog(View v) {
         DatePickerFragment newFragment = new DatePickerFragment();
@@ -111,6 +119,12 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     }
 
+    public void agregarEstablecimiento(View view)
+    {
+        GoPartY.getInstance().setEventoActual(evento);
+        startActivity(new Intent(this,AgregarEstablecimientoEventoActivity.class));
+    }
+
     public void launchMultiplePhonePicker(View view) {
         startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), AGREGAR_INVITADO);
     }
@@ -135,15 +149,7 @@ public class CrearEventoActivity extends AppCompatActivity {
                         evento.getInvitaciones().add(new Invitacion(idContact, nombreContacto));
                         actualizarPantalla();
 
-                        /**Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-                         String[] columnas = {ContactsContract.CommonDataKinds.Phone.NUMBER};
-                         String seleccion = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + "='" + nombreContacto + "'";
-                         Cursor c = getContentResolver().query(phoneUri,columnas,seleccion,null, null );
 
-                         if(c.moveToFirst()){
-                         numeroTelefonico = c.getString(0);
-                         }
-                         */
 
 
                     } catch (Exception e) {
