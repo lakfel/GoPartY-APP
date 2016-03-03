@@ -1,5 +1,7 @@
 package cam.grupo09.goparty.mundo;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -213,6 +215,7 @@ public class Evento implements Serializable
         OpcionPropuesta<Establecimiento>[] estas = new OpcionPropuesta[establecimientosPropuestos.size()];
         for (int i = 0; i <establecimientosPropuestos.size(); i++)
         {
+            Log.d("Establecimientos", "Agregando el establecimiento " + establecimientosPropuestos.get(i).toString());
             estas[i] = establecimientosPropuestos.get(i);
         }
         return estas;
@@ -228,4 +231,15 @@ public class Evento implements Serializable
         }
         return horsSals;
     }
+
+        public boolean estaEstablecimento(String nombreEvento)
+        {
+            for (OpcionPropuesta<Establecimiento> a:establecimientosPropuestos)
+            {
+                if(a.getOpcion().getNombre().equals(nombreEvento))
+                    return true;
+            }
+            return false;
+        }
+
 }

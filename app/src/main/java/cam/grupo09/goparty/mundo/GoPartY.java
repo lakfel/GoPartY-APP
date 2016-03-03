@@ -49,6 +49,7 @@ public class GoPartY
 
     public Evento getEventoActual()
     {
+        eventoActual = (eventoActual == null)?(new Evento()):eventoActual;
         return eventoActual;
     }
 

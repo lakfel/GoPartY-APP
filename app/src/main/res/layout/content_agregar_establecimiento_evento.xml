@@ -116,13 +116,14 @@
         android:layout_height="184dp"
         android:id="@+id/lstResultadoBusqueda"
         android:layout_gravity="center_horizontal"
-        android:choiceMode="none" />
+        android:choiceMode="singleChoice" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Agregar"
         android:id="@+id/btnAgregar"
+        android:onClick="agregarEstablecimientoAlEvento"
         android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

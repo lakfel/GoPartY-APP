@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical|center_horizontal"
-                    android:onClick="showDatePickerDialog"
+                    android:onClick="agregarLugarPrevia"
                     android:text="Agregar" />
             </LinearLayout>
 
@@ -240,6 +240,42 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical|center_horizontal"
                     android:onClick="agregarEstablecimiento"
+                    android:text="Agregar" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="298dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center_vertical"
+                android:text="Hora de llegada al establecimiento"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1" >
+
+                <ListView
+                    android:id="@+id/lstHoraSal"
+                    android:layout_width="203dp"
+                    android:layout_height="match_parent"
+                    android:choiceMode="none"
+                    android:scrollbars="vertical"
+                    android:layout_weight="1.09" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:id="@+id/bntHorasSal"
+                    android:layout_width="88dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:onClick="showTimePickerDialog"
                     android:text="Agregar" />
             </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +24,7 @@ import cam.grupo09.goparty.Enumerables.TipoBebida;
 import cam.grupo09.goparty.Enumerables.TipoMusica;
 import cam.grupo09.goparty.R;
 import cam.grupo09.goparty.mundo.Establecimiento;
+import cam.grupo09.goparty.mundo.Evento;
 import cam.grupo09.goparty.mundo.GoPartY;
 import cam.grupo09.goparty.mundo.OpcionPropuesta;
 
@@ -33,11 +35,13 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
     private Spinner spTipoMusica;
     private Spinner spTipoBebidas;
     private ListView lstResultados;
+    private int posSeleccionada;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        posSeleccionada = -1;
         setContentView(R.layout.activity_agregar_establecimiento_evento);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,47 +68,65 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spTipoMusica.setAdapter(dataAdapter1);
 
-        lstResultados = (ListView)findViewById(R.id.lstResultadoBusqueda);
+        lstResultados = (ListView) findViewById(R.id.lstResultadoBusqueda);
+        lstResultados.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         lstResultados.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parent, View view,
                                     int position2, long id) {
-                final int position = position2;
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                if(lstResultados.getSelectedItem() != null)
-                                {
-                                    GoPartY.getInstance().getEventoActual().getEstablecimientosPropuestos()
-                                            .add(new OpcionPropuesta<Establecimiento>((Establecimiento) lstResultados.getItemAtPosition(position)));
-                                }
-                                break;
 
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                break;
-                        }
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-                builder.setMessage("Quiere agregar el establecimiento " + lstResultados.getItemAtPosition(position).toString() + "?")
-                        .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener).show();
-
+                //Todo desplegar la pantalla de información.
+                posSeleccionada = position2;
+                Log.d("Guardando numero", "Numero : " + posSeleccionada);
             }
+
 
         });
 
     }
 
-    public void realizarBusqueda(View view)
-    {
-        ArrayList<Establecimiento> busqueda = GoPartY.getInstance().darBusquedaFiltrada(
-                txtNombre.getText().toString(),txtDescripcion.getText().toString(),
-                spTipoMusica.getSelectedItem().toString(),spTipoBebidas.getSelectedItem().toString(),0);
 
-        ArrayAdapter<Establecimiento> adapter = new ArrayAdapter<Establecimiento>(this, R.layout.lista_item, R.id.label,busqueda);
+    public void agregarEstablecimientoAlEvento(View view) {
+        if (posSeleccionada >= 0) {
+            Establecimiento est = (Establecimiento) lstResultados.getItemAtPosition(posSeleccionada);
+            Evento ev = GoPartY.getInstance().getEventoActual();
+            if (ev != null) {
+                if (!ev.estaEstablecimento(est.getNombre()))
+                {
+                    Log.d("Agregando ", est.getNombre());
+                    ev.getEstablecimientosPropuestos().add(new OpcionPropuesta<Establecimiento>(est));
+
+                    showDialog("Nuevo establecimiento","Se agregó el establecimiento " + est.getNombre());
+                }
+                else
+                {
+                    showDialog("Nuevo establecimiento","El establecimiento " + est.getNombre()+ "ya se había propuesto en este evento");
+                }
+            }
+        }
+    }
+
+
+    private void showDialog(String title, String message) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(title);
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+
+            }
+        });
+        AlertDialog dialog= alertDialog.create();
+        dialog.show();
+
+    }
+
+    public void realizarBusqueda(View view) {
+        ArrayList<Establecimiento> busqueda = GoPartY.getInstance().darBusquedaFiltrada(
+                txtNombre.getText().toString(), txtDescripcion.getText().toString(),
+                spTipoMusica.getSelectedItem().toString(), spTipoBebidas.getSelectedItem().toString(), 0);
+
+        ArrayAdapter<Establecimiento> adapter = new ArrayAdapter<Establecimiento>(this, R.layout.lista_item, R.id.label, busqueda);
         lstResultados.setAdapter(adapter);
     }
 
