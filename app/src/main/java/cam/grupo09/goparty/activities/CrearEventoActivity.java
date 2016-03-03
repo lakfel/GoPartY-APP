@@ -3,6 +3,7 @@ package cam.grupo09.goparty.activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,7 +43,8 @@ public class CrearEventoActivity extends AppCompatActivity {
     private TextView lblFecha;
     private ListView lstFechasProp;
     private ListView lstInvitaciones;
-
+    private ListView lstHorasPrev;
+    private ListView lstHorasSal;
 
 
     @Override
@@ -49,9 +54,10 @@ public class CrearEventoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         evento = new Evento();
-        txtNombreEvento = (EditText)findViewById(R.id.txtNombre);
-        lstFechasProp =(ListView)findViewById(R.id.lstFechasProP);
-        lstInvitaciones = (ListView)findViewById(R.id.lstInvitaciones);
+        txtNombreEvento = (EditText) findViewById(R.id.txtNombre);
+        lstFechasProp = (ListView) findViewById(R.id.lstFechasProP);
+        lstInvitaciones = (ListView) findViewById(R.id.lstInvitaciones);
+        lstHorasPrev = (ListView)findViewById(R.id.lstHorasPrevias);
     }
 
 
@@ -61,30 +67,146 @@ public class CrearEventoActivity extends AppCompatActivity {
         newFragment.show(getFragmentManager(), "datePicker");
     }
 
+    public void showTimePickerDialog(View v) {
+        TimePickerFragment  newFragment = new TimePickerFragment();
+        int num = (v.getId() == R.id.btnHoraPrev)?1:2;
+        newFragment.setActivity(this,num);
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+
     public void addFecha(Date toDate)
     {
         evento.getFechasPropuestas().add(new OpcionPropuesta<Date>(toDate));
         actualizarPantalla();
-        /**
-        fechaEvento = toDate;
-
-        */
     }
 
-    public void actualizarPantalla()
+    public void addHoraPrev(String hora)
     {
+        evento.getHorasPropuestasPrevia().add(new OpcionPropuesta<String>(hora));
+        actualizarPantalla();
+    }
+
+    public void addHoraSal(String hora)
+    {
+        evento.getHorasPropuestasSalida().add(new OpcionPropuesta<String>(hora));
+        actualizarPantalla();
+    }
+
+    public void actualizarPantalla() {
         OpcionPropuesta<Date>[] fs = evento.darFechasPrpoestas();
         String[] fechas = new String[fs.length];
         SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
-        for (int i = 0; i <fs.length ; i++)
-        {
+        for (int i = 0; i < fs.length; i++) {
             fechas[i] = sf.format(fs[i].getOpcion());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.lista_item, R.id.label,fechas);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.lista_item, R.id.label, fechas);
         lstFechasProp.setAdapter(adapter);
-        ArrayAdapter<Invitacion> adapter2 = new ArrayAdapter<Invitacion>(this, R.layout.lista_item, R.id.label,evento.darInvitaciones());
+        ArrayAdapter<Invitacion> adapter2 = new ArrayAdapter<Invitacion>(this, R.layout.lista_item, R.id.label, evento.darInvitaciones());
         lstInvitaciones.setAdapter(adapter2);
+
+        ArrayAdapter<OpcionPropuesta<String>> adapter3 = new ArrayAdapter<OpcionPropuesta<String>>(this, R.layout.lista_item, R.id.label, evento.darHorasPreviaPropuestas());
+        lstHorasPrev.setAdapter(adapter3);
+
+
     }
+
+    public void launchMultiplePhonePicker(View view) {
+        startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), AGREGAR_INVITADO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("INVITADOS", "Resultado " + (resultCode == RESULT_OK));
+        if (resultCode == RESULT_OK) {
+            Log.d("INVITADOS", "Resultado2 " + (AGREGAR_INVITADO));
+            if (requestCode == AGREGAR_INVITADO) {
+                String nombreContacto = "";
+                String idContact = "";
+                Uri uriContacto = data.getData();
+                if (uriContacto != null) {
+                    try {
+                        String[] cols = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY};
+                        Cursor cursor = getContentResolver().query(uriContacto, cols, null, null, null);
+                        cursor.moveToFirst();
+                        nombreContacto = cursor.getString(0);
+                        idContact = cursor.getString(1);
+                        Log.d("INVITADOS", "Nombre " + (nombreContacto));
+                        evento.getInvitaciones().add(new Invitacion(idContact, nombreContacto));
+                        actualizarPantalla();
+
+                        /**Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+                         String[] columnas = {ContactsContract.CommonDataKinds.Phone.NUMBER};
+                         String seleccion = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + "='" + nombreContacto + "'";
+                         Cursor c = getContentResolver().query(phoneUri,columnas,seleccion,null, null );
+
+                         if(c.moveToFirst()){
+                         numeroTelefonico = c.getString(0);
+                         }
+                         */
+
+
+                    } catch (Exception e) {
+                        //numeroTelefonico = e.getMessage();
+                        //showDialog(DIALOGO_ERROR);
+                        e.printStackTrace();
+                    }
+                    //btContactos.setText(nombreContacto + "(Cambiar)");
+                }
+
+
+            }
+        }
+    }
+
+    // --------------------------------- PICKERS
+    public static class TimePickerFragment extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener
+    {
+
+        private CrearEventoActivity puente;
+        private int tipoHora;
+        private int hora;
+        private int minutos;
+
+        public void setActivity(CrearEventoActivity nAc, int nHor)
+        {
+            puente = nAc;
+            tipoHora = nHor;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+            hora = -1;
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+        {
+            hora = hourOfDay;
+            minutos = minute;
+
+        }
+
+        @Override
+        public void onDestroy()
+        {
+            super.onDestroy();
+            if(hora >= 0 && hora < 4)
+            {
+                if(tipoHora == 1)
+                {
+                    puente.addHoraPrev(hora + ":" + minutos);
+                }
+            }
+        }
+    }
+
 
     /**
      * Clase que despliega un menu de selección de fecha
@@ -98,8 +220,7 @@ public class CrearEventoActivity extends AppCompatActivity {
         private int mes;
         private int ano;
 
-        public void setActivity(CrearEventoActivity propia)
-        {
+        public void setActivity(CrearEventoActivity propia) {
             puente = propia;
         }
 
@@ -118,7 +239,7 @@ public class CrearEventoActivity extends AppCompatActivity {
         @Override
         public void onDestroy() {
             super.onDestroy();
-            if(dia > 0 && dia <=31) {
+            if (dia > 0 && dia <= 31) {
                 Calendar c = Calendar.getInstance();
                 c.set(ano, mes, dia);
                 Date seleccionada = new Date(c.getTimeInMillis());
@@ -126,73 +247,13 @@ public class CrearEventoActivity extends AppCompatActivity {
             }
         }
 
-        public void onDateSet(DatePicker view, int year, int month, int day)
-        {
+        public void onDateSet(DatePicker view, int year, int month, int day) {
             dia = day;
             mes = month;
             ano = year;
             // Do something with the date chosen by the user
         }
     }
-
-
-
-
-    public void launchMultiplePhonePicker(View view)
-    {
-        startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), AGREGAR_INVITADO );
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        Log.d("INVITADOS","Resultado " + (resultCode== RESULT_OK));
-        if( resultCode== RESULT_OK)
-        {
-            Log.d("INVITADOS","Resultado2 " + (AGREGAR_INVITADO));
-            if(requestCode == AGREGAR_INVITADO)
-            {
-                String nombreContacto = "";
-                String idContact = "";
-                Uri uriContacto = data.getData();
-                if(uriContacto != null ){
-                    try {
-                        String[] cols = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME , ContactsContract.CommonDataKinds.Phone.CONTACT_ID};
-                        Cursor cursor =  getContentResolver().query(uriContacto, cols, null, null, null);
-                        cursor.moveToFirst();
-                        nombreContacto = cursor.getString(0);
-                        idContact = cursor.getString(1);
-                        Log.d("INVITADOS","Nombre " + (nombreContacto));
-                        evento.getInvitaciones().add(new Invitacion(idContact,nombreContacto));
-                        actualizarPantalla();
-
-                        /**Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-                        String[] columnas = {ContactsContract.CommonDataKinds.Phone.NUMBER};
-                        String seleccion = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + "='" + nombreContacto + "'";
-                        Cursor c = getContentResolver().query(phoneUri,columnas,seleccion,null, null );
-
-                        if(c.moveToFirst()){
-                            numeroTelefonico = c.getString(0);
-                        }
-                        */
-
-
-
-                    } catch (Exception e) {
-                        //numeroTelefonico = e.getMessage();
-                        //showDialog(DIALOGO_ERROR);
-                        e.printStackTrace();
-                    }
-                    //btContactos.setText(nombreContacto + "(Cambiar)");
-                }
-
-
-            }
-        }
-    }
-
-
-    //-------------------- DIALOGODE BUSQUEDA -----------------------------------
 
 
 }

@@ -16,6 +16,19 @@ public enum EstadoEvento implements Serializable
         Finalizado: El evento ya pasó.
      */
 
-    EN_CONFIGURACION, CONFIGURADO, ANULADO, FINALIZADO
+    EN_CONFIGURACION("En Configuracion"),
+    CONFIGURADO("Configurado"),
+    ANULADO("Anulado"),
+    FINALIZADO("Finalizado");
 
+    private String valor;
+
+    EstadoEvento(String valor) {
+        this.valor = valor;
+    }
+
+    @Override
+    public String toString() {
+        return valor;
+    }
 }

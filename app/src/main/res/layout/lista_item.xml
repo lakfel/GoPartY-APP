@@ -4,6 +4,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:padding="5dip"
-        android:textSize="14dip"
-        android:textStyle="bold" >
+        android:textSize="12dip"
+        android:textStyle="italic" >
 </TextView>

@@ -17,6 +17,20 @@ public enum EstadoInvitacion implements Serializable
         Rechazado: Respuesta rechazando la asistencia
      */
 
-    SIN_ENVIAR, ENVIADO, ACEPTADO, TAL_VEZ, RECHAZADO
+    SIN_ENVIAR("Sin enviar"),
+    ENVIADO("Enviado"),
+    ACEPTADO("Aceptado"),
+    TAL_VEZ("Tal vez"),
+    RECHAZADO("Rechazado");
 
+    private String valor;
+
+    EstadoInvitacion(String valor) {
+        this.valor = valor;
+    }
+
+    @Override
+    public String toString() {
+        return valor;
+    }
 }

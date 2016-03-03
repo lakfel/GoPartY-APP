@@ -6,5 +6,32 @@ package cam.grupo09.goparty.Enumerables;
  */
 public enum TipoMusica
 {
-    SALSA,MERENGUE,BACHATA,REGGAETON,REGGAE,VALLENATO,RANCHERA,POPULAR,ROCK,POP,ELECTRONICA,HOUSE,JAZZ,BLUES,METAL,HARD_ROCK, CROSS_OVER
+    SALSA("Salsa"),
+    MERENGUE("Merengue"),
+    BACHATA("Bachata"),
+    REGGAETON("Reggaeton"),
+    REGGAE("Reggae"),
+    VALLENATO("Vallenato"),
+    RANCHERA("Ranchera"),
+    POPULAR("Popular"),
+    ROCK("Rock"),
+    POP("Pop"),
+    ELECTRONICA("Electronica"),
+    HOUSE("House"),
+    JAZZ("Jazz"),
+    BLUES("Blues"),
+    METAL("Metal"),
+    HARD_ROCK("Hard rock"),
+    CROSS_OVER("Cross over");
+
+    private String valor;
+
+    TipoMusica(String valor) {
+        this.valor = valor;
+    }
+
+    @Override
+    public String toString() {
+        return valor;
+    }
 }

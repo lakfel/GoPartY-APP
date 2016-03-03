@@ -26,16 +26,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="0.12"
-                android:gravity="center_vertical|fill"
-                android:text="Configura tu evento con los datos."
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,10 +34,15 @@
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_gravity="center_vertical"
                     android:text="Nombre del evento"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#000000"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textAlignment="gravity"
+                    android:gravity="center" />
 
                 <EditText
                     android:id="@+id/txtNombre"
@@ -62,7 +57,10 @@
                 android:layout_height="23dp"
                 android:layout_gravity="center_vertical"
                 android:text="Fechas Propuestas"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -73,7 +71,7 @@
                 <ListView
                     android:id="@+id/lstFechasProP"
                     android:layout_width="245dp"
-                    android:layout_height="93dp"
+                    android:layout_height="55dp"
                     android:choiceMode="none"
                     android:scrollbars="vertical" />
 
@@ -85,7 +83,7 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical|center_horizontal"
                     android:onClick="showDatePickerDialog"
-                    android:text="Fecha" />
+                    android:text="Agregar" />
 
             </LinearLayout>
 
@@ -95,7 +93,10 @@
                 android:layout_height="29dp"
                 android:layout_gravity="center_vertical"
                 android:text="Invitados"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,20 +117,130 @@
                 <ListView
                     android:id="@+id/lstInvitaciones"
                     android:layout_width="203dp"
-                    android:layout_height="95dp"
+                    android:layout_height="57dp"
                     android:choiceMode="none"
-                    android:layout_weight="0.76"
-                    android:scrollbars="vertical"/>
+                    android:scrollbars="vertical"
+                    android:layout_weight="1.21" />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab"
-                    android:layout_width="41dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="right"
-                    android:layout_margin="@dimen/fab_margin"
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:id="@+id/btnAgInv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|center_horizontal"
                     android:onClick="launchMultiplePhonePicker"
-                    android:src="@android:drawable/ic_input_add" />
+                    android:text="Agregar" />
 
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="298dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center_vertical"
+                android:text="Lugar de la previa"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1">
+
+                <ListView
+                    android:id="@+id/lstLugares"
+                    android:layout_width="203dp"
+                    android:layout_height="62dp"
+                    android:choiceMode="none"
+                    android:scrollbars="vertical"
+                    android:alwaysDrawnWithCache="true"
+                    android:layout_weight="1" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:id="@+id/btnAgLugar"
+                    android:layout_width="88dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:onClick="showDatePickerDialog"
+                    android:text="Agregar" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="298dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center_vertical"
+                android:text="Hora de la previa"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1" >
+
+                <ListView
+                    android:id="@+id/lstHorasPrevias"
+                    android:layout_width="203dp"
+                    android:layout_height="match_parent"
+                    android:choiceMode="none"
+                    android:scrollbars="vertical"
+                    android:layout_weight="1.09" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:id="@+id/btnHoraPrev"
+                    android:layout_width="88dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:onClick="showTimePickerDialog"
+                    android:text="Agregar" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="298dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center_vertical"
+                android:text="Establecimiento"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1" >
+
+                <ListView
+                    android:id="@+id/lstEstablecimientos"
+                    android:layout_width="203dp"
+                    android:layout_height="62dp"
+                    android:choiceMode="none"
+                    android:scrollbars="vertical"
+                    android:alwaysDrawnWithCache="true"
+                    android:layout_weight="1" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:id="@+id/btnAgEstabl"
+                    android:layout_width="88dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:onClick="showDatePickerDialog"
+                    android:text="Agregar" />
             </LinearLayout>
 
         </LinearLayout>
