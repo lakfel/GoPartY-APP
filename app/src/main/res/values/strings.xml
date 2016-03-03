@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">GoPartY</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Titulos de Ventanas -->
+    <string name="main_title">GoParty - =)</string>
+    <string name="title_activity_crear_evento">Crear un nuevo vento</string>
+    <string name="title_activity_main">GoPart-Y  =) </string>
+    <string name="app_label"></string>
+    <string name="search_hint"></string>
+
+    <!--      ELEMTNOS GRAFICOS POR VISTA -->
+
+    <!-- Main -->
+    <string name="main_opcion_crear_evento"> Crear un nuevo evento.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>
