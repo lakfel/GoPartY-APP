@@ -33,6 +33,7 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
     private Spinner spTipoBebidas;
     private ListView lstResultados;
     private int posSeleccionada;
+    private ListView nn;
 
 
     @Override
