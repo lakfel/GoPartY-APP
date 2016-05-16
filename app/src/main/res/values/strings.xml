@@ -21,6 +21,7 @@
     </string>
     <string name="title_activity_ver_establecimiento">VerEstablecimientoActivity</string>
     <string name="title_activity_registro_nuemero">RegistroNuemeroActivity</string>
+    <string name="title_activity_mac_avtivity">MacAvtivity</string>
 
 
 </resources>

@@ -21,6 +21,15 @@
     android:textAlignment="center"
     android:gravity="center_horizontal">
 
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ModoFest"
+        android:id="@+id/toggleButton"
+        android:layout_gravity="right"
+        android:layout_weight="0.09"
+        android:checked="false" />
+
     <ScrollView
         android:layout_width="363dp"
         android:layout_height="wrap_content"

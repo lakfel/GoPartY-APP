@@ -1,6 +1,8 @@
 package cam.grupo09.goparty.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -10,10 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orm.SugarContext;
@@ -28,6 +33,7 @@ import java.util.Random;
 import cam.grupo09.goparty.PersistenciaORMDTOS.EventoDTO;
 import cam.grupo09.goparty.PersistenciaORMDTOS.UsuarioDTO;
 import cam.grupo09.goparty.R;
+import cam.grupo09.goparty.Sensores.ServicioTaxiAcel;
 import cam.grupo09.goparty.backGround.ConsultaWEB;
 import cam.grupo09.goparty.backGround.WebListenerQuery;
 
@@ -63,13 +69,15 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     public static List<EventoDTO> sinReportar;
     public static EventoDTO actual;
 
+    public ToggleButton buttonN;
+
     public static SharedPreferences sharedPreferences;
 
     private ListView lstEventos;
     private TextView lblEventos;
     private ListView lstEventosSin;
     private TextView lblEventosSin;
-
+    private static ServicioTaxiAcel  acele;
     public void guardarTodo(View view)
     {
         GoPartY.getManejadorPersistencia().guardarInfo(sinReportar);
@@ -80,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     {
         super.onCreate(savedInstanceState);
         SugarContext.init(this);
-
+         acele = new ServicioTaxiAcel();
+        acele.start(this);
 
         if(sharedPreferences == null)
         {
@@ -111,11 +120,42 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
         lblEventosSin = (TextView)findViewById(R.id.txtSinReportar);
         GoPartY.getManejadorPersistencia().setPath(getFilesDir());
         GoPartY.getManejadorPersistencia().cargarInfor();
-
+         buttonN = (ToggleButton) findViewById(R.id.toggleButton);
+        buttonN.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if (isChecked) {
+                   MainActivity.acele.reg();
+                } else {
+                    MainActivity.acele.unreg();
+                }
+            }
+        });
         actualizarEventos();
 
     }
 
+
+    public void showDialog(String title, String message) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(title);
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        alertDialog.setNegativeButton("Después",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+
+            }
+        });
+        AlertDialog dialog= alertDialog.create();
+        dialog.show();
+
+    }
 
     public void revisarEventos(View view   )
     {
@@ -177,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 
     public void actualizarEventos()
     {
-        Log.i("Actualizando vista --","" +  Evento.listAll(Evento.class).size());
+        Log.i("Actualizando vista --", "" + Evento.listAll(Evento.class).size());
         ArrayAdapter<Evento> adapter = new ArrayAdapter<Evento>(this, R.layout.lista_item, R.id.label, Evento.listAll(Evento.class));
         lstEventos.setAdapter(adapter);
         int num=  Evento.listAll(Evento.class).size();
@@ -204,12 +244,6 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     public void crearEvento(View v)
     {
@@ -405,5 +439,24 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.actionbar_service_toggle) {
+            ToggleButton button = (ToggleButton) findViewById(R.id.actionbar_service_toggle);
+            if(button.isChecked())
+                acele.reg();
+            else
+                acele.unreg();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

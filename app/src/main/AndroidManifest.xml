@@ -50,14 +50,25 @@
         <activity
             android:name=".activities.RegistroNuemeroActivity"
             android:label="@string/title_activity_registro_nuemero"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="cam09GoParty.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="5" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="cam.grupo09.goparty.persistenciaORMModelos" />
+
+        <activity
+            android:name=".activities.MacAvtivity"
+            android:label="@string/title_activity_mac_avtivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <meta-data android:name="DATABASE" android:value="cam09GoParty.db" />
-        <meta-data android:name="VERSION" android:value="5" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="cam.grupo09.goparty.persistenciaORMModelos" />
-
-
     </application>
 
 </manifest>
