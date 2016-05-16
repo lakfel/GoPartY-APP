@@ -64,6 +64,10 @@ public class Opcion extends SugarRecord
     }
 
 
+    @Override
+    public String toString() {
+        return idTipoOpcion + " - " + opcion +  " - " + votos;
+    }
 
 
 

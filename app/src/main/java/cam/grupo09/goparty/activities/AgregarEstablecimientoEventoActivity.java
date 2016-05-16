@@ -17,13 +17,13 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
-import cam.grupo09.goparty.Enumerables.TipoBebida;
-import cam.grupo09.goparty.Enumerables.TipoMusica;
 import cam.grupo09.goparty.R;
-import cam.grupo09.goparty.mundo.Establecimiento;
-import cam.grupo09.goparty.mundo.Evento;
-import cam.grupo09.goparty.mundo.GoPartY;
-import cam.grupo09.goparty.mundo.OpcionPropuesta;
+import cam.grupo09.goparty.persistenciaORMModelos.Establecimiento;
+import cam.grupo09.goparty.persistenciaORMModelos.EstablecimientoBebida;
+import cam.grupo09.goparty.persistenciaORMModelos.EstablecimientoMusica;
+import cam.grupo09.goparty.persistenciaORMModelos.TipoBebida;
+import cam.grupo09.goparty.persistenciaORMModelos.TipoMusica;
+
 
 public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
 
@@ -48,21 +48,12 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
         txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
         spTipoBebidas = (Spinner) findViewById(R.id.spTipoBebida);
         spTipoMusica = (Spinner) findViewById(R.id.spTipoMusica);
-        TipoBebida[] values = TipoBebida.values();
-        List<String> tbs = new ArrayList<String>();
-        for (TipoBebida a : values) {
-            tbs.add(a.toString());
-        }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tbs);
+
+        ArrayAdapter<TipoBebida> dataAdapter = new ArrayAdapter<TipoBebida>(this, android.R.layout.simple_spinner_item, TipoBebida.listAll(TipoBebida.class));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spTipoBebidas.setAdapter(dataAdapter);
 
-        TipoMusica[] values1 = TipoMusica.values();
-        List<String> tbs1 = new ArrayList<String>();
-        for (TipoMusica a : values1) {
-            tbs1.add(a.toString());
-        }
-        ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tbs1);
+        ArrayAdapter<TipoMusica> dataAdapter1 = new ArrayAdapter<TipoMusica>(this, android.R.layout.simple_spinner_item, TipoMusica.listAll(TipoMusica.class));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spTipoMusica.setAdapter(dataAdapter1);
 
@@ -94,7 +85,7 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
 
     public void agregarEstablecimientoAlEvento(View view) {
         if (posSeleccionada >= 0) {
-            Establecimiento est = (Establecimiento) lstResultados.getItemAtPosition(posSeleccionada);
+            /**Establecimiento est = (Establecimiento) lstResultados.getItemAtPosition(posSeleccionada);
             Evento ev = GoPartY.getInstance().getEventoActual();
             if (ev != null) {
                 if (!ev.estaEstablecimento(est.getNombre())) {
@@ -105,7 +96,7 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
                 } else {
                     showDialog("Nuevo establecimiento", "El establecimiento " + est.getNombre() + "ya se había propuesto en este evento");
                 }
-            }
+            }**/
         }
     }
 
@@ -125,19 +116,30 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
 
     }
 
-    public void realizarBusqueda(View view) {
+    public void realizarBusqueda(View view)
+    {
+
+        List<EstablecimientoBebida> conBeidas = EstablecimientoBebida.find(EstablecimientoBebida.class
+                                                ,"idBebida = ?",spTipoBebidas.getSelectedItem().toString());
+        List<EstablecimientoMusica> conMusica = EstablecimientoBebida.find(EstablecimientoMusica.class
+                ,"idMusica = ?",spTipoMusica.getSelectedItem().toString());
+
+
+
+
         ArrayList<Establecimiento> busqueda = GoPartY.getInstance().darBusquedaFiltrada(
                 txtNombre.getText().toString(), txtDescripcion.getText().toString(),
                 spTipoMusica.getSelectedItem().toString(), spTipoBebidas.getSelectedItem().toString(), 0);
 
         ArrayAdapter<Establecimiento> adapter = new ArrayAdapter<Establecimiento>(this, R.layout.lista_item, R.id.label, busqueda);
         lstResultados.setAdapter(adapter);
+         **/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        GoPartY.getInstance().guardar();
+        //GoPartY.getInstance().guardar();
 
     }
 }

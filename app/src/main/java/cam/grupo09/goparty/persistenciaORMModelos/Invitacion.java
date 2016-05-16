@@ -42,7 +42,10 @@ public class Invitacion extends SugarRecord
         this.idUsuario = idUsuario;
     }
 
-
+    @Override
+    public String toString() {
+        return idEvento + " - " + idUsuario;
+    }
 }
 
 

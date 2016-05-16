@@ -108,5 +108,9 @@ public class Evento extends SugarRecord
     }
 
 
+    @Override
+    public String toString() {
+        return nombre + " - " + descripcion;
+    }
 
 }

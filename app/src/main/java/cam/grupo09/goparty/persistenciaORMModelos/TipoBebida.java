@@ -27,4 +27,8 @@ public class TipoBebida extends SugarRecord
         this.tipo = tipo;
     }
 
+    @Override
+    public String toString() {
+        return tipo;
+    }
 }

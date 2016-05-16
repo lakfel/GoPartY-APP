@@ -28,5 +28,7 @@ public class TipoMusica extends SugarRecord
         this.tipo = tipo;
     }
 
-
+    public String toString() {
+        return tipo;
+    }
 }

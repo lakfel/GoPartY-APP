@@ -75,4 +75,9 @@ public class Establecimiento extends SugarRecord
     public void setCostoCover(double costoCover) {
         this.costoCover = costoCover;
     }
+
+    @Override
+    public String toString() {
+        return nombre + " - " + descripcion;
+    }
 }

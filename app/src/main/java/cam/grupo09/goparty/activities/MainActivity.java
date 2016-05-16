@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     {
         super.onCreate(savedInstanceState);
         SugarContext.init(this);
-        Establecimiento.findById(Establecimiento.class, (long)1);
+        actualizarEventos();
 
         if(sharedPreferences == null)
         {

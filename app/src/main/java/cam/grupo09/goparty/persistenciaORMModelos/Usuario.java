@@ -44,6 +44,8 @@ public class Usuario extends SugarRecord
         this.correo = correo;
     }
 
-
+    public String toString() {
+        return nombre + " - " + celular;
+    }
 
 }
