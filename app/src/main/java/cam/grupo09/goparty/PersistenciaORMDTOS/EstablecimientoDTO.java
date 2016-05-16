@@ -111,6 +111,8 @@ public class EstablecimientoDTO
         this.costoCover = costoCover;
     }
 
-
-
+    @Override
+    public String toString() {
+        return nombre + " - " + descripcion;
+    }
 }

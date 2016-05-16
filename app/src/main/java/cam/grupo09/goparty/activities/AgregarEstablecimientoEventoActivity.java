@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
+import cam.grupo09.goparty.PersistenciaORMDTOS.EstablecimientoDTO;
+import cam.grupo09.goparty.PersistenciaORMDTOS.OpcionesDTO;
 import cam.grupo09.goparty.R;
 import cam.grupo09.goparty.persistenciaORMModelos.Establecimiento;
 import cam.grupo09.goparty.persistenciaORMModelos.EstablecimientoBebida;
@@ -85,8 +87,14 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
     }
 
     public void agregarEstablecimientoAlEvento(View view) {
-        if (posSeleccionada >= 0) {
-
+        if (posSeleccionada >= 0)
+        {
+            Establecimiento n = (Establecimiento)lstResultados.getItemAtPosition(posSeleccionada );
+            OpcionesDTO pp = new OpcionesDTO();
+            pp.setTipoOpcion(OpcionesDTO.OPC_ESTABLECIMIENTO);
+            pp.setCantidadVotos(0);
+            pp.setOpcion(n.getIdEstablecimiento() + "");
+            MainActivity.actual.addOpcion(pp);;
         }
     }
 

@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cam.grupo09.goparty.PersistenciaORMDTOS.EventoDTO;
 import cam.grupo09.goparty.PersistenciaORMDTOS.UsuarioDTO;
@@ -59,13 +60,15 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     public final static String QUERY_ACTUALIZAR = "ACTUALIZAR::";
     public final static String QUERY_UPLOAD_EVENT = "UPLOAD::";
 
-    private List<EventoDTO> sinReportar;
+    public static List<EventoDTO> sinReportar;
     public static EventoDTO actual;
 
     public static SharedPreferences sharedPreferences;
 
     private ListView lstEventos;
     private TextView lblEventos;
+    private ListView lstEventosSin;
+    private TextView lblEventosSin;
 
     public void guardarTodo(View view)
     {
@@ -98,15 +101,17 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
         }
 
 
-
+        sinReportar = GoPartY.getManejadorPersistencia().cargarInfor();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         lstEventos = (ListView)findViewById(R.id.lstEventos);
         lblEventos = (TextView)findViewById(R.id.lblEventos);
+        lstEventosSin  = (ListView)findViewById(R.id.lstEvSinReportar);
+        lblEventosSin = (TextView)findViewById(R.id.txtSinReportar);
         GoPartY.getManejadorPersistencia().setPath(getFilesDir());
         GoPartY.getManejadorPersistencia().cargarInfor();
-        lstEventos = (ListView)findViewById(R.id.lstEventos);
+
         actualizarEventos();
 
     }
@@ -119,10 +124,10 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 //        consultaWEB.execute();
     }
 
-    public void guardarEventoActual()
+    public static void guardarEventoActual()
     {
         sinReportar.add(actual);
-        actual = null;
+        actual = null ;
     }
 
 
@@ -136,12 +141,24 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 
     public void reportarEvento(View view)
     {
-        if(isNetworkConnectionAvailable())
-        {
-            ObjectMapper map = new ObjectMapper();
-            ConsultaWEB consultaWEB = new ConsultaWEB(null,"https://gopartyserver.herokuapp.com/users/evento","POST",this,"EVENTOS" );
+        for(int i = 0; i < sinReportar.size(); i++)
+            if(isNetworkConnectionAvailable())
+            {
+                try
+                {
+                    ObjectMapper map = new ObjectMapper();
+                    String st= map.writeValueAsString(sinReportar.get(i));
+                    Log.i("---- EVENTO -- " , st);
+                    new ConsultaWEB(new JSONObject(st),
+                                "https://gopartyserver.herokuapp.com/users/evento","POST",this,QUERY_UPLOAD_EVENT + sinReportar.get(i).getId() ).execute();
 
-        }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
     }
 
     public void actualizarBD(View view)
@@ -168,7 +185,16 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
             lblEventos.setText("No tienes eventos =(");
         else
             lblEventos.setText("Tienes " + num + " eventos");
-                }
+
+
+        ArrayAdapter<EventoDTO> adapter2 = new ArrayAdapter<EventoDTO>(this, R.layout.lista_item, R.id.label, sinReportar);
+        lstEventosSin.setAdapter(adapter2);
+        int num2= sinReportar.size();
+        if (num == 0)
+            lblEventosSin.setText("Todos tus eventos han sido sincronizados, no hay pendientes");
+        else
+            lblEventosSin.setText("Tienes " + num + " eventos pedientes por sincronizar");
+    }
 
     @Override
     protected void onResume() {
@@ -188,6 +214,16 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     public void crearEvento(View v)
     {
         actual = new EventoDTO();
+        String nombre = sharedPreferences.getString(NAME_VALUE, "00000000000");
+        String correo = sharedPreferences.getString(EMAIL_VALUE, "00000000000");
+        String numero = sharedPreferences.getString(NUMBER_VALUE, "00000000000");
+        UsuarioDTO admin = new UsuarioDTO();
+        admin.setNombre(nombre);
+        admin.setCelular(numero);
+        admin.setCorreo(correo);
+        actual.setAdmin(admin);
+        Random rn = new Random();
+        actual.setId(rn.nextLong());
         startActivity(new Intent(this, CrearEventoActivity.class));
     }
 
@@ -203,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     }
 
     @Override
-    public void receive(JSONArray response, String query)
+    public synchronized void receive(JSONArray response, String query)
     {
         if(query.equalsIgnoreCase(QUERY_ESTABLECIMIENTOS)) {
             List<EventoDTO> eventos = new ArrayList<EventoDTO>();
@@ -357,6 +393,17 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 
 
 
+        }
+        else if (query.startsWith(QUERY_UPLOAD_EVENT))
+        {
+            long id = Long.parseLong(query.split("::")[1]);
+            for(int i = 0 ; i < sinReportar.size(); i++)
+            {
+                if(sinReportar.get(i).getId() == id) {
+                    sinReportar.remove(i);
+                    break;
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package cam.grupo09.goparty.PersistenciaORMDTOS;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,11 @@ public class EventoDTO
 
 
 
-    public EventoDTO() {
+    public EventoDTO()
+    {
+        invitaciones = new ArrayList<UsuarioDTO>();
+        opciones = new ArrayList<OpcionesDTO>();
+
     }
 
     public TipoBebidaDTO getTiposBebida() {
@@ -147,9 +152,12 @@ public class EventoDTO
         this.estado = estado;
     }
 
+    public void addOpcion(OpcionesDTO op){opciones.add(op);}
 
+    public void addOInvitacion(UsuarioDTO op){invitaciones.add(op);}
 
-
-
-
+    @Override
+    public String toString() {
+        return nombre + " - " + descripcion;
+    }
 }

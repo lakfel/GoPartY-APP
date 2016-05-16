@@ -33,10 +33,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import cam.grupo09.goparty.PersistenciaORMDTOS.EstablecimientoDTO;
+import cam.grupo09.goparty.PersistenciaORMDTOS.EventoDTO;
+import cam.grupo09.goparty.PersistenciaORMDTOS.OpcionesDTO;
+import cam.grupo09.goparty.PersistenciaORMDTOS.UsuarioDTO;
 import cam.grupo09.goparty.R;
 
 import cam.grupo09.goparty.mundo.GoPartY;
+import cam.grupo09.goparty.persistencia.LeerSMS;
+import cam.grupo09.goparty.persistenciaORMModelos.Establecimiento;
+import cam.grupo09.goparty.persistenciaORMModelos.Invitacion;
+import cam.grupo09.goparty.persistenciaORMModelos.Opcion;
+import cam.grupo09.goparty.persistenciaORMModelos.Usuario;
 
 
 public class CrearEventoActivity extends AppCompatActivity {
@@ -58,7 +68,8 @@ public class CrearEventoActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_evento);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -80,59 +91,56 @@ public class CrearEventoActivity extends AppCompatActivity {
     {
         if(item.getItemId() == R.id.action_settings)
         {
-          //  GoPartY.getInstance().getEventoActual().setNombreEvento(txtNombreEvento.getText().toString());
+            MainActivity.actual.setNombre(txtNombreEvento.getText().toString());
             confirmarCreacionEvento();
             showDialog("Eventos", "El evento fue guardado");
-         //   GoPartY.getInstance().empezarEventoActivity();
-            actualizarPantalla();
+            MainActivity.guardarEventoActual();
+
         }
-            else
-        {
-
+        else {
             String fechasS = "";
-         //   OpcionPropuesta<Date>[] fs = GoPartY.getInstance().getEventoActual().darFechasPrpoestas();
+
+            List<OpcionesDTO> fs = MainActivity.actual.getOpciones();
             SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
-          //  fechasS = sf.format(fs[0].getOpcion());
-          //  for (int i = 1; i < fs.length; i++) {
-           //     fechasS += ";" + sf.format(fs[i].getOpcion());
+            String fechaS = "1";
+            String horasS1 = "1";
+            String horasS2 = "1";
+            String lugares = "1";
+            if (!fs.isEmpty()) {
+                for (int i = 0; i < fs.size(); i++) {
+                    if (fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_FECHA))
+                        fechasS += ";" + sf.format(fs.get(i).getOpcion());
+                    else if (fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_HORA_SAL))
+                        horasS1 += ";" + sf.format(fs.get(i).getOpcion());
+                    else if (fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_HORA_SAL))
+                        horasS2 += ";" + sf.format(fs.get(i).getOpcion());
+                    else if (fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_LUGAR_PREVIA))
+                        lugares += ";" + sf.format(fs.get(i).getOpcion());
+                }
             }
 
-            String horasS = "";
-         //   OpcionPropuesta<String>[] hs = GoPartY.getInstance().getEventoActual().darHorasPreviaPropuestas();
-         /**   horasS = hs[0].toString();
-            for (int i = 1; i < hs.length; i++) {
-                horasS += ";" + hs[i];
-            }
-**/
-            String lugares = "";
-          //  OpcionPropuesta<Establecimiento>[] ls = GoPartY.getInstance().getEventoActual().darEstablecimientosPropuestos();
-           // lugares = ls[0].toString();
-          //  for (int i = 1; i < ls.length; i++) {
-           //     lugares += ";" + ls[i];
-           // }
-           // ArrayList<Invitacion> invitaciones = GoPartY.getInstance().getEventoActual().getInvitaciones();
-           // Evento e = GoPartY.getInstance().getEventoActual();
-           /** for (Invitacion a: invitaciones)
-            {
+
+            List<UsuarioDTO> invitaciones = MainActivity.actual.getInvitaciones();
+            EventoDTO e = MainActivity.actual;
+            for (UsuarioDTO a : invitaciones) {
                 Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
                 String[] columnas = {ContactsContract.CommonDataKinds.Phone.NUMBER};
-                String seleccion = ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY + "='" + a.getIdentificadorInvitado() + "'";
-                Cursor c = getContentResolver().query(phoneUri,columnas,seleccion,null, null );
+                String seleccion = ContactsContract.CommonDataKinds.Phone.NUMBER + "='" + a.getCelular() + "'";
+                Cursor c = getContentResolver().query(phoneUri, columnas, seleccion, null, null);
                 String numeroTelefonico;
 
-                if(c.moveToFirst()){
+                if (c.moveToFirst()) {
                     numeroTelefonico = c.getString(0);
-                    TelephonyManager tMgr = (TelephonyManager)getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+                    TelephonyManager tMgr = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
                     String mPhoneNumber = tMgr.getLine1Number();
 
-                    String msn = "GoPartY-" + mPhoneNumber+"-"+e.getNombreEvento()+"-"+fechasS+"-"+horasS+"-"+lugares;
-                    LeerSMS.getInstance().enviarSMS(msn,numeroTelefonico);
+                    String msn = "GoPartY-" + mPhoneNumber + "-" + e.getNombre() + "-" + fechasS + "-" + horasS1 + "-" + lugares;
+                    //LeerSMS.getInstance().enviarSMS(msn,numeroTelefonico);
                 }
 
             }
 
         }
-            **/
         return super.onOptionsItemSelected(item);
     }
 
@@ -154,8 +162,7 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     public void confirmarCreacionEvento()
     {
-       // GoPartY.getInstance().getEventoActual().setNombreEvento(txtNombreEvento.getText().toString());
-        //GoPartY.getInstance().crearEvento();
+        MainActivity.actual.setNombre(txtNombreEvento.getText().toString());
     }
 
     @Override
@@ -163,9 +170,9 @@ public class CrearEventoActivity extends AppCompatActivity {
     {
         super.onResume();
 
-       // evento = GoPartY.getInstance().getEventoActual();
-       // if(evento == null)
-        //    evento = new Evento();
+        EventoDTO evento = MainActivity.actual;
+        if(evento == null)
+            evento = new EventoDTO();
         actualizarPantalla();
     }
 
@@ -185,13 +192,21 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     public void addFecha(Date toDate)
     {
-       // GoPartY.getInstance().getEventoActual().getFechasPropuestas().add(new OpcionPropuesta<Date>(toDate));
+        OpcionesDTO op = new OpcionesDTO();
+        op.setTipoOpcion(OpcionesDTO.OPC_FECHA);
+        op.setCantidadVotos(0);
+        op.setOpcion(toDate.getTime()+"");
+        MainActivity.actual.addOpcion(op);
         actualizarPantalla();
     }
 
     public void addHoraPrev(String hora)
     {
-        //GoPartY.getInstance().getEventoActual().getHorasPropuestasPrevia().add(new OpcionPropuesta<String>(hora));
+        OpcionesDTO op = new OpcionesDTO();
+        op.setTipoOpcion(OpcionesDTO.OPC_HORA_LL);
+        op.setCantidadVotos(0);
+        op.setOpcion(hora);
+        MainActivity.actual.addOpcion(op);
         actualizarPantalla();
     }
 
@@ -199,7 +214,11 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     public void addHoraSal(String hora)
     {
-        //GoPartY.getInstance().getEventoActual().getHorasPropuestasSalida().add(new OpcionPropuesta<String>(hora));
+        OpcionesDTO op = new OpcionesDTO();
+        op.setTipoOpcion(OpcionesDTO.OPC_HORA_SAL);
+        op.setCantidadVotos(0);
+        op.setOpcion(hora);
+        MainActivity.actual.addOpcion(op);
         actualizarPantalla();
     }
 
@@ -228,9 +247,11 @@ public class CrearEventoActivity extends AppCompatActivity {
         alertDialog.setMessage("Agregue un nombre del lugar, direccion y un comentario si desea");
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-               // GoPartY.getInstance().getEventoActual().getLugaresPropuestos().add(new OpcionPropuesta<LugarPrevia>(new LugarPrevia(
-                //        nombreBox.getText().toString(),direccionBox.getText().toString(),descriptionBox.getText().toString()
-               // )));
+                OpcionesDTO op = new OpcionesDTO();
+                op.setTipoOpcion(OpcionesDTO.OPC_LUGAR_PREVIA);
+                op.setCantidadVotos(0);
+                op.setOpcion(direccionBox.getText().toString());
+                MainActivity.actual.addOpcion(op);
             }
         });
         AlertDialog dialog= alertDialog.create();
@@ -248,31 +269,56 @@ public class CrearEventoActivity extends AppCompatActivity {
         return true;
     }
 
-    public void actualizarPantalla() {
-      /**  OpcionPropuesta<Date>[] fs = GoPartY.getInstance().getEventoActual().darFechasPrpoestas();
-        String[] fechas = new String[fs.length];
+    public void actualizarPantalla()
+    {
+        List<OpcionesDTO> fs = MainActivity.actual.getOpciones();
+        ArrayList<String> fechas = new ArrayList<String>();
+        ArrayList<String> horas1 = new ArrayList<String>();
+        ArrayList<String> horas2 = new ArrayList<String>();
+        ArrayList<String> lugarPrevia = new ArrayList<String>();
+        ArrayList<EstablecimientoDTO> establecimienots = new ArrayList<EstablecimientoDTO>();
+
         SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
-        for (int i = 0; i < fs.length; i++) {
-            fechas[i] = sf.format(fs[i].getOpcion());
+        for (int i = 0; i < fs.size(); i++) {
+            if(fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_FECHA))
+                fechas.add(sf.format(new Date(Long.parseLong(fs.get(i).getOpcion()))));
+            else if(fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_HORA_SAL))
+                horas1.add(fs.get(i).getOpcion());
+            else if(fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_HORA_LL))
+                horas2.add(fs.get(i).getOpcion());
+            else if(fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_LUGAR_PREVIA))
+                lugarPrevia.add(fs.get(i).getOpcion());
+            else if(fs.get(i).getTipoOpcion().equalsIgnoreCase(OpcionesDTO.OPC_ESTABLECIMIENTO))
+            {
+                Establecimiento n = Establecimiento.find(Establecimiento.class, "id_Establecimiento = ?", fs.get(i).getOpcion()).get(0);
+                EstablecimientoDTO nn = new EstablecimientoDTO();
+                nn.setNombre(n.getNombre());
+                nn.setDescripcion(n.getDescripcion());
+                nn.setCostoCover(n.getCostoCover());
+                nn.setDireccion(n.getDireccion());
+
+                establecimienots.add(nn);
+            }
+
+
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.lista_item, R.id.label, fechas);
         lstFechasProp.setAdapter(adapter);
-        ArrayAdapter<Invitacion> adapter2 = new ArrayAdapter<Invitacion>(this, R.layout.lista_item, R.id.label, GoPartY.getInstance().getEventoActual().darInvitaciones());
+        ArrayAdapter<UsuarioDTO> adapter2 = new ArrayAdapter<UsuarioDTO>(this, R.layout.lista_item, R.id.label, MainActivity.actual.getInvitaciones());
         lstInvitaciones.setAdapter(adapter2);
-        ArrayAdapter<OpcionPropuesta<String>> adapter3 = new ArrayAdapter<OpcionPropuesta<String>>(this, R.layout.lista_item, R.id.label, GoPartY.getInstance().getEventoActual().darHorasPreviaPropuestas());
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.lista_item, R.id.label, horas1);
         lstHorasPrev.setAdapter(adapter3);
-        ArrayAdapter<OpcionPropuesta<Establecimiento>> adapter4 = new ArrayAdapter<OpcionPropuesta<Establecimiento>>(this, R.layout.lista_item, R.id.label, GoPartY.getInstance().getEventoActual().darEstablecimientosPropuestos());
+        ArrayAdapter<EstablecimientoDTO> adapter4 = new ArrayAdapter<EstablecimientoDTO>(this, R.layout.lista_item, R.id.label, establecimienots);
         lstEstablecimiento.setAdapter(adapter4);
-        ArrayAdapter<OpcionPropuesta<LugarPrevia>> adapter5 = new ArrayAdapter<OpcionPropuesta<LugarPrevia>>(this, R.layout.lista_item, R.id.label, GoPartY.getInstance().getEventoActual().darLugaresPrpuestos());
+        ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this, R.layout.lista_item, R.id.label, lugarPrevia);
         lstLgares.setAdapter(adapter5);
-        ArrayAdapter<OpcionPropuesta<String>> adapter6 = new ArrayAdapter<OpcionPropuesta<String>>(this, R.layout.lista_item, R.id.label, GoPartY.getInstance().getEventoActual().darHorasSalidaPropuestas() );
+        ArrayAdapter<String> adapter6 = new ArrayAdapter<String>(this, R.layout.lista_item, R.id.label, horas2 );
         lstHorasSal.setAdapter(adapter6);
-**/
+
     }
 
     public void agregarEstablecimiento(View view)
     {
-        //GoPartY.getInstance().setEventoActual(evento);
         startActivity(new Intent(this,AgregarEstablecimientoEventoActivity.class));
     }
 
@@ -288,16 +334,30 @@ public class CrearEventoActivity extends AppCompatActivity {
             if (requestCode == AGREGAR_INVITADO) {
                 String nombreContacto = "";
                 String idContact = "";
+                String idCo = "";
                 Uri uriContacto = data.getData();
                 if (uriContacto != null) {
                     try {
-                        String[] cols = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY};
+                        String[] cols = {ContactsContract.Contacts._ID,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY, ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER};
                         Cursor cursor = getContentResolver().query(uriContacto, cols, null, null, null);
                         cursor.moveToFirst();
-                        nombreContacto = cursor.getString(0);
-                        idContact = cursor.getString(1);
+                        idCo = cursor.getString(0);
+                        nombreContacto = cursor.getString(1);
+                        idContact = cursor.getString(2);
+
+                        String cel = "";
+
+                        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ idCo, null, null);
+                        if (phones.moveToNext())
+                        {
+                            cel = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA));
+                            Log.i("CEL  ", cel);
+                        }
+                        UsuarioDTO nuevo = new UsuarioDTO();
+                        nuevo.setNombre(nombreContacto);
+                        nuevo.setCelular(cel);
                         Log.d("INVITADOS", "Nombre " + (nombreContacto));
-                       //GoPartY.getInstance().getEventoActual().getInvitaciones().add(new Invitacion(idContact, nombreContacto));
+                        MainActivity.actual.addOInvitacion(nuevo);
                         actualizarPantalla();
 
 
@@ -423,7 +483,7 @@ public class CrearEventoActivity extends AppCompatActivity {
     {
 
         super.onDestroy();
-     //   GoPartY.getInstance().guardar();
+        GoPartY.getManejadorPersistencia().guardarInfo(MainActivity.sinReportar);
     }
 
 }
