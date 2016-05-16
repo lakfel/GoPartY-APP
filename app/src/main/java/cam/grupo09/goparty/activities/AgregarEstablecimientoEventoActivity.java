@@ -131,10 +131,10 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
 
 
         List<Establecimiento> results = Establecimiento.listAll(Establecimiento.class);
-        Log.i("Estabs ", "" + result.size());
+        Log.i("Estabs ", "" + results.size());
         for (int i = 0;i < results.size();i++)
         {
-            Log.i("Estabs ", "" + result.get(i).getId());
+            Log.i("Estabs ", "" + results.get(i).getId());
         }
 
         for (int i = 0;i < conBeidas.size();i++)
@@ -142,10 +142,11 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
             EstablecimientoBebida bebi = conBeidas.get(i);
             for (int j = 0;j < conMusica.size();j++)
             {
-                EstablecimientoMusica musi = conMusica.get(i);
+                EstablecimientoMusica musi = conMusica.get(j);
+                Log.i("Agregando al resultado", bebi.getIdEstablecimiento() + " --  " +  musi.getIdEstablecimiento());
                 if(bebi.getIdEstablecimiento() == musi.getIdEstablecimiento())
                 {
-                    Log.i("Agregando al resultado", bebi.getIdEstablecimiento() + " --  " +  musi.getIdEstablecimiento());
+
                     Establecimiento n = Establecimiento.findById(Establecimiento.class, bebi.getIdEstablecimiento());
                     if(n!=null)result.add(n);
                 }

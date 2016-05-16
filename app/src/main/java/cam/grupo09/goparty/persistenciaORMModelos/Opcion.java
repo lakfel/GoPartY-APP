@@ -1,7 +1,6 @@
 package cam.grupo09.goparty.persistenciaORMModelos;
 
 import com.orm.SugarRecord;
-import com.orm.dsl.Table;
 
 /**
  * Created by Felipe on 15/05/2016.
@@ -10,7 +9,7 @@ import com.orm.dsl.Table;
 public class Opcion extends SugarRecord
 {
 
-    private Long id;
+    private Long idOpcion;
 
     private Long idEvento;
 
@@ -30,11 +29,11 @@ public class Opcion extends SugarRecord
     private int votos;
 
     public Long getId() {
-        return id;
+        return idOpcion;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idOpcion = id;
     }
 
     public Long getIdEvento() {

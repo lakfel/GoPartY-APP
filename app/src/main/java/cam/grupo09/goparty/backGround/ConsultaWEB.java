@@ -55,6 +55,7 @@ public class ConsultaWEB extends AsyncTask<Void, Void, JSONArray>
     protected JSONArray doInBackground(Void... b)
     {
         realizarConsulta();
+        if(tipo.equalsIgnoreCase("GET"))
         ansewr.receive(objetoJSONResp,qquery);
         return objetoJSONResp;
     }

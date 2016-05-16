@@ -11,7 +11,7 @@ public class Establecimiento extends SugarRecord
 {
 
 
-    private Long id;
+
 
     private String nombre;
 
@@ -26,14 +26,18 @@ public class Establecimiento extends SugarRecord
     public Establecimiento() {
     }
 
-    public Long getId() {
-        return id;
+
+
+
+    private long idEstablecimiento;
+
+    public long getIdEstablecimiento() {
+        return idEstablecimiento;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdEstablecimiento(long idEstablecimiento) {
+        this.idEstablecimiento = idEstablecimiento;
     }
-
 
 
     public String getNombre() {

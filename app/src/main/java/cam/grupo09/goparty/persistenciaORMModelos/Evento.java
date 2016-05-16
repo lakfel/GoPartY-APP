@@ -1,7 +1,6 @@
 package cam.grupo09.goparty.persistenciaORMModelos;
 
 import com.orm.SugarRecord;
-import com.orm.dsl.Table;
 
 import java.util.Date;
 
@@ -13,7 +12,7 @@ public class Evento extends SugarRecord
 {
 
 
-    private Long id;
+    private Long idEvento;
 
     private String nombre;
 
@@ -44,11 +43,11 @@ public class Evento extends SugarRecord
     }
 
     public Long getId() {
-        return id;
+        return idEvento;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idEvento = id;
     }
 
     public String getNombre() {
