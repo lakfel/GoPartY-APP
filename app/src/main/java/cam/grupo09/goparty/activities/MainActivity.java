@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     }
 
     @Override
-    public synchronized void receive(JSONArray response, String query)
+    public  void receive(JSONArray response, String query)
     {
         if(query.equalsIgnoreCase(QUERY_ESTABLECIMIENTOS)) {
             List<EventoDTO> eventos = new ArrayList<EventoDTO>();
