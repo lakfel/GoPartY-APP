@@ -34,6 +34,17 @@ public class Evento extends SugarRecord
         return admin;
     }
 
+
+    public Long idEstablecimiento;
+
+    public Long getIdEstablecimiento() {
+        return idEstablecimiento;
+    }
+
+    public void setIdEstablecimiento(Long idEstablecimiento) {
+        this.idEstablecimiento = idEstablecimiento;
+    }
+
     public void setAdmin(String admin) {
         this.admin = admin;
     }
