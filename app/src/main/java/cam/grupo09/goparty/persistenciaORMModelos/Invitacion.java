@@ -17,11 +17,11 @@ public class Invitacion extends SugarRecord
     private String idUsuario;
 
 
-    public Long getId() {
+    public Long getIdInvitacion() {
         return idInvitacion;
     }
 
-    public void setId(Long id) {
+    public void setIdInvitacion(Long id) {
         this.idInvitacion = id;
     }
 

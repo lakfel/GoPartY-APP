@@ -16,90 +16,104 @@
     tools:showIn="@layout/activity_ver_establecimiento">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="N"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/lbl_nombre_establecimiento" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView2" >
 
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="87dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Descripcion: "
-                android:id="@+id/textView15" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="8dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="N"
-                android:id="@+id/lbl_descripcion_establecimiento" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/lbl_nombre_establecimiento" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="94dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Direccion: "
-                android:id="@+id/textView16" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="N"
-                android:id="@+id/lbl_direccion_establecimiento" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Descripcion: "
+                    android:id="@+id/textView15" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Cover: "
-                android:id="@+id/textView17" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="N"
-                android:id="@+id/lbl_cover_establecimiento" />
-        </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Musica"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-        <ListView
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/scrollView" >
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_Musica_establecimiento">
-        </ListView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bebidas"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_Bebidas_establecimiento">
-        </ListView>
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="8dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="N"
+                        android:id="@+id/lbl_descripcion_establecimiento" />
+                </ScrollView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Direccion: "
+                    android:id="@+id/textView16" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="N"
+                    android:id="@+id/lbl_direccion_establecimiento" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Cover: "
+                    android:id="@+id/textView17" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="N"
+                    android:id="@+id/lbl_cover_establecimiento" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Musica"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <ListView
+
+                android:layout_width="wrap_content"
+                android:layout_height="108dp"
+                android:id="@+id/list_Musica_establecimiento">
+            </ListView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bebidas"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="128dp"
+                android:id="@+id/list_Bebidas_establecimiento">
+            </ListView>
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

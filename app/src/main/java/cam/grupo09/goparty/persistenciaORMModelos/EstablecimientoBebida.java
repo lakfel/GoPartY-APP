@@ -21,11 +21,11 @@ public class EstablecimientoBebida extends SugarRecord
     }
 
 
-    public Long getId() {
+    public Long getIdEstabBeb() {
         return idEstabBeb;
     }
 
-    public void setId(Long id) {
+    public void setIdEstabBeb(Long id) {
         this.idEstabBeb = id;
     }
 

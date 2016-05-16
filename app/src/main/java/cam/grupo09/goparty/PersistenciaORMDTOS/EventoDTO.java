@@ -1,18 +1,15 @@
-package cam.grupo09.goparty.persistenciaORMModelos;
-
-import com.orm.SugarRecord;
+package cam.grupo09.goparty.PersistenciaORMDTOS;
 
 import java.util.Date;
+import java.util.List;
 
 /**
- * Created by Felipe on 15/05/2016.
+ * Created by Felipe on 16/05/2016.
  */
-
-public class Evento extends SugarRecord
+public class EventoDTO
 {
 
-
-    private Long idEvento;
+    private Long id;
 
     private String nombre;
 
@@ -28,26 +25,70 @@ public class Evento extends SugarRecord
 
     private String estado;
 
-    private String admin;
+    private TipoBebidaDTO tiposBebida;
 
-    public String getAdmin() {
+    private EstablecimientoDTO establecimiento;
+
+    private UsuarioDTO admin;
+
+    private List<UsuarioDTO> invitaciones;
+
+    private List<OpcionesDTO> opciones;
+
+
+
+
+    public EventoDTO() {
+    }
+
+    public TipoBebidaDTO getTiposBebida() {
+        return tiposBebida;
+    }
+
+    public void setTiposBebida(TipoBebidaDTO tiposBebida) {
+        this.tiposBebida = tiposBebida;
+    }
+
+    public EstablecimientoDTO getEstablecimiento() {
+        return establecimiento;
+    }
+
+    public void setEstablecimiento(EstablecimientoDTO establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
+    public UsuarioDTO getAdmin() {
         return admin;
     }
 
-    public void setAdmin(String admin) {
+    public void setAdmin(UsuarioDTO admin) {
         this.admin = admin;
     }
 
-
-    public Evento() {
+    public List<UsuarioDTO> getInvitaciones() {
+        return invitaciones;
     }
 
-    public Long getIdEvento() {
-        return idEvento;
+    public void setInvitaciones(List<UsuarioDTO> invitaciones) {
+        this.invitaciones = invitaciones;
     }
 
-    public void setIdEvento(Long id) {
-        this.idEvento = id;
+    public List<OpcionesDTO> getOpciones() {
+        return opciones;
+    }
+
+    public void setOpciones(List<OpcionesDTO> opciones) {
+        this.opciones = opciones;
+    }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -107,9 +148,8 @@ public class Evento extends SugarRecord
     }
 
 
-    @Override
-    public String toString() {
-        return nombre + " - " + descripcion;
-    }
+
+
+
 
 }

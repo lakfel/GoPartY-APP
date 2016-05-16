@@ -10,10 +10,6 @@ import android.util.Log;
 
 import java.util.Date;
 
-import cam.grupo09.goparty.mundo.Establecimiento;
-import cam.grupo09.goparty.mundo.Evento;
-import cam.grupo09.goparty.mundo.GoPartY;
-import cam.grupo09.goparty.mundo.OpcionPropuesta;
 
 /**
  * Created by Felipe on 03/03/2016.
@@ -51,27 +47,25 @@ public class LeerSMS extends BroadcastReceiver {
 
                     if(message.startsWith("GoPartY"))
                     {
-                        Evento n = new Evento();
+
                         String[] divs = message.split("-");
                         String nombre = divs[2];
-                        n.setNombreEvento(nombre);
+
                         String[] fechas = divs[3].split(";");
                         for(String l: fechas)
                         {
-                            n.getFechasPropuestas().add(new OpcionPropuesta<Date>(new Date(l)));
+
                         }
                         String[] horas = divs[4].split(";");
                         for(String l: horas)
                         {
-                            n.getHorasPropuestasPrevia().add(new OpcionPropuesta<String>(l));
                         }
                         String[] estas = divs[5].split(";");
                         for(String l: estas)
                         {
-                            Establecimiento t = GoPartY.getInstance().getManejadorPersistencia().darEtablecimientoNombre(l);
-                            n.getEstablecimientosPropuestos().add(new OpcionPropuesta<Establecimiento>(t));
+
                         }
-                        GoPartY.getInstance().getManejadorPersistencia().getEventos().add(n);
+
 
 
                     }

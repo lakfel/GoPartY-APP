@@ -28,11 +28,11 @@ public class Opcion extends SugarRecord
 
     private int votos;
 
-    public Long getId() {
+    public Long getIdOpcion() {
         return idOpcion;
     }
 
-    public void setId(Long id) {
+    public void setIdOpcion(Long id) {
         this.idOpcion = id;
     }
 

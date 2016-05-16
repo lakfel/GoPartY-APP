@@ -13,134 +13,147 @@
     android:background="@color/colorFondoLight2"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="cam.grupo09.goparty.activities.AgregarEstablecimientoEventoActivity"
-    tools:showIn="@layout/activity_agregar_establecimiento_evento">
+    tools:showIn="@layout/activity_agregar_establecimiento_evento"
+    android:weightSum="1">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:weightSum="1">
+        android:layout_height="427dp"
+        android:id="@+id/scrollView3"
+        android:layout_weight="0.44">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Nombre"
-            android:id="@+id/textView10"
-            android:layout_weight="0.92" />
-
-        <EditText
-            android:layout_width="199dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtNombre" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:weightSum="1">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:weightSum="1" >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Nombre"
+                    android:id="@+id/textView10"
+                    android:layout_weight="0.92" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Descripcion"
-            android:id="@+id/textView11"
-            android:layout_weight="0.92" />
+                <EditText
+                    android:layout_width="199dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtNombre" />
 
-        <EditText
-            android:layout_width="199dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtDescripcion" />
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1" >
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:weightSum="1" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Tipo musica"
-            android:id="@+id/textView12"
-            android:layout_weight="0.95" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Descripcion"
+                    android:id="@+id/textView11"
+                    android:layout_weight="0.92" />
 
-        <Spinner
-            android:layout_width="187dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/spTipoMusica"
-            android:spinnerMode="dropdown" />
+                <EditText
+                    android:layout_width="199dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtDescripcion" />
+            </LinearLayout>
 
-    </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1" >
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:weightSum="1" >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Tipo musica"
+                    android:id="@+id/textView12"
+                    android:layout_weight="0.95" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Tipo bebida"
-            android:id="@+id/textView13"
-            android:layout_weight="0.92" />
+                <Spinner
+                    android:layout_width="187dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spTipoMusica"
+                    android:spinnerMode="dropdown" />
 
-        <Spinner
-            android:layout_width="187dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/spTipoBebida"
-            android:spinnerMode="dropdown" />
+            </LinearLayout>
 
-    </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:weightSum="1" >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Buscar"
-        android:id="@+id/btnBuscar"
-        android:onClick="realizarBusqueda"
-        android:layout_gravity="center_horizontal" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Tipo bebida"
+                    android:id="@+id/textView13"
+                    android:layout_weight="0.92" />
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="184dp"
-        android:id="@+id/lstResultadoBusqueda"
-        android:layout_gravity="center_horizontal"
-        android:choiceMode="singleChoice" />
+                <Spinner
+                    android:layout_width="187dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spTipoBebida"
+                    android:spinnerMode="dropdown" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1">
+            </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Agregar"
-            android:id="@+id/btnAgregar"
-            android:onClick="agregarEstablecimientoAlEvento"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.32" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buscar"
+                android:id="@+id/btnBuscar"
+                android:onClick="realizarBusqueda"
+                android:layout_gravity="center_horizontal" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Visitar"
-            android:id="@+id/btnVisitar"
-            android:onClick="visitarEstablecimiento"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.47" />
-    </LinearLayout>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="184dp"
+                android:id="@+id/lstResultadoBusqueda"
+                android:layout_gravity="center_horizontal"
+                android:choiceMode="singleChoice" />
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Agregar"
+                    android:id="@+id/btnAgregar"
+                    android:onClick="agregarEstablecimientoAlEvento"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.32" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Visitar"
+                    android:id="@+id/btnVisitar"
+                    android:onClick="visitarEstablecimiento"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.47" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

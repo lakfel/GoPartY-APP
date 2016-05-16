@@ -35,13 +35,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import cam.grupo09.goparty.R;
-import cam.grupo09.goparty.mundo.Establecimiento;
-import cam.grupo09.goparty.mundo.Evento;
+
 import cam.grupo09.goparty.mundo.GoPartY;
-import cam.grupo09.goparty.mundo.Invitacion;
-import cam.grupo09.goparty.mundo.LugarPrevia;
-import cam.grupo09.goparty.mundo.OpcionPropuesta;
-import cam.grupo09.goparty.persistencia.LeerSMS;
+
 
 public class CrearEventoActivity extends AppCompatActivity {
 
@@ -50,7 +46,7 @@ public class CrearEventoActivity extends AppCompatActivity {
     public final static int AGREGAR_INVITADO = 1;
     public final static int AGREGAR_ESTABLECIMIENTO = 2;
 
-    private Evento evento;
+
     private EditText txtNombreEvento;
     private TextView lblFecha;
     private ListView lstFechasProp;
@@ -67,7 +63,7 @@ public class CrearEventoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_crear_evento);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        evento = new Evento();
+
         txtNombreEvento = (EditText) findViewById(R.id.txtNombre);
         lstFechasProp = (ListView) findViewById(R.id.lstFechasProP);
         lstInvitaciones = (ListView) findViewById(R.id.lstInvitaciones);
@@ -82,40 +78,41 @@ public class CrearEventoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if(item.getItemId() == R.id.action_settings) {
-            GoPartY.getInstance().getEventoActual().setNombreEvento(txtNombreEvento.getText().toString());
+        if(item.getItemId() == R.id.action_settings)
+        {
+          //  GoPartY.getInstance().getEventoActual().setNombreEvento(txtNombreEvento.getText().toString());
             confirmarCreacionEvento();
-            showDialog("Evento", "El evento fue guardado");
-            GoPartY.getInstance().empezarEventoActivity();
+            showDialog("Eventos", "El evento fue guardado");
+         //   GoPartY.getInstance().empezarEventoActivity();
             actualizarPantalla();
         }
             else
         {
 
             String fechasS = "";
-            OpcionPropuesta<Date>[] fs = GoPartY.getInstance().getEventoActual().darFechasPrpoestas();
+         //   OpcionPropuesta<Date>[] fs = GoPartY.getInstance().getEventoActual().darFechasPrpoestas();
             SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
-            fechasS = sf.format(fs[0].getOpcion());
-            for (int i = 1; i < fs.length; i++) {
-                fechasS += ";" + sf.format(fs[i].getOpcion());
+          //  fechasS = sf.format(fs[0].getOpcion());
+          //  for (int i = 1; i < fs.length; i++) {
+           //     fechasS += ";" + sf.format(fs[i].getOpcion());
             }
 
             String horasS = "";
-            OpcionPropuesta<String>[] hs = GoPartY.getInstance().getEventoActual().darHorasPreviaPropuestas();
-            horasS = hs[0].toString();
+         //   OpcionPropuesta<String>[] hs = GoPartY.getInstance().getEventoActual().darHorasPreviaPropuestas();
+         /**   horasS = hs[0].toString();
             for (int i = 1; i < hs.length; i++) {
                 horasS += ";" + hs[i];
             }
-
+**/
             String lugares = "";
-            OpcionPropuesta<Establecimiento>[] ls = GoPartY.getInstance().getEventoActual().darEstablecimientosPropuestos();
-            lugares = ls[0].toString();
-            for (int i = 1; i < ls.length; i++) {
-                lugares += ";" + ls[i];
-            }
-            ArrayList<Invitacion> invitaciones = GoPartY.getInstance().getEventoActual().getInvitaciones();
-            Evento e = GoPartY.getInstance().getEventoActual();
-            for (Invitacion a: invitaciones)
+          //  OpcionPropuesta<Establecimiento>[] ls = GoPartY.getInstance().getEventoActual().darEstablecimientosPropuestos();
+           // lugares = ls[0].toString();
+          //  for (int i = 1; i < ls.length; i++) {
+           //     lugares += ";" + ls[i];
+           // }
+           // ArrayList<Invitacion> invitaciones = GoPartY.getInstance().getEventoActual().getInvitaciones();
+           // Evento e = GoPartY.getInstance().getEventoActual();
+           /** for (Invitacion a: invitaciones)
             {
                 Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
                 String[] columnas = {ContactsContract.CommonDataKinds.Phone.NUMBER};
@@ -135,7 +132,7 @@ public class CrearEventoActivity extends AppCompatActivity {
             }
 
         }
-
+            **/
         return super.onOptionsItemSelected(item);
     }
 
@@ -157,8 +154,8 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     public void confirmarCreacionEvento()
     {
-        GoPartY.getInstance().getEventoActual().setNombreEvento(txtNombreEvento.getText().toString());
-        GoPartY.getInstance().crearEvento();
+       // GoPartY.getInstance().getEventoActual().setNombreEvento(txtNombreEvento.getText().toString());
+        //GoPartY.getInstance().crearEvento();
     }
 
     @Override
@@ -166,9 +163,9 @@ public class CrearEventoActivity extends AppCompatActivity {
     {
         super.onResume();
 
-        evento = GoPartY.getInstance().getEventoActual();
-        if(evento == null)
-            evento = new Evento();
+       // evento = GoPartY.getInstance().getEventoActual();
+       // if(evento == null)
+        //    evento = new Evento();
         actualizarPantalla();
     }
 
@@ -188,13 +185,13 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     public void addFecha(Date toDate)
     {
-        GoPartY.getInstance().getEventoActual().getFechasPropuestas().add(new OpcionPropuesta<Date>(toDate));
+       // GoPartY.getInstance().getEventoActual().getFechasPropuestas().add(new OpcionPropuesta<Date>(toDate));
         actualizarPantalla();
     }
 
     public void addHoraPrev(String hora)
     {
-        GoPartY.getInstance().getEventoActual().getHorasPropuestasPrevia().add(new OpcionPropuesta<String>(hora));
+        //GoPartY.getInstance().getEventoActual().getHorasPropuestasPrevia().add(new OpcionPropuesta<String>(hora));
         actualizarPantalla();
     }
 
@@ -202,7 +199,7 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     public void addHoraSal(String hora)
     {
-        GoPartY.getInstance().getEventoActual().getHorasPropuestasSalida().add(new OpcionPropuesta<String>(hora));
+        //GoPartY.getInstance().getEventoActual().getHorasPropuestasSalida().add(new OpcionPropuesta<String>(hora));
         actualizarPantalla();
     }
 
@@ -231,9 +228,9 @@ public class CrearEventoActivity extends AppCompatActivity {
         alertDialog.setMessage("Agregue un nombre del lugar, direccion y un comentario si desea");
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                GoPartY.getInstance().getEventoActual().getLugaresPropuestos().add(new OpcionPropuesta<LugarPrevia>(new LugarPrevia(
-                        nombreBox.getText().toString(),direccionBox.getText().toString(),descriptionBox.getText().toString()
-                )));
+               // GoPartY.getInstance().getEventoActual().getLugaresPropuestos().add(new OpcionPropuesta<LugarPrevia>(new LugarPrevia(
+                //        nombreBox.getText().toString(),direccionBox.getText().toString(),descriptionBox.getText().toString()
+               // )));
             }
         });
         AlertDialog dialog= alertDialog.create();
@@ -252,7 +249,7 @@ public class CrearEventoActivity extends AppCompatActivity {
     }
 
     public void actualizarPantalla() {
-        OpcionPropuesta<Date>[] fs = GoPartY.getInstance().getEventoActual().darFechasPrpoestas();
+      /**  OpcionPropuesta<Date>[] fs = GoPartY.getInstance().getEventoActual().darFechasPrpoestas();
         String[] fechas = new String[fs.length];
         SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
         for (int i = 0; i < fs.length; i++) {
@@ -270,7 +267,7 @@ public class CrearEventoActivity extends AppCompatActivity {
         lstLgares.setAdapter(adapter5);
         ArrayAdapter<OpcionPropuesta<String>> adapter6 = new ArrayAdapter<OpcionPropuesta<String>>(this, R.layout.lista_item, R.id.label, GoPartY.getInstance().getEventoActual().darHorasSalidaPropuestas() );
         lstHorasSal.setAdapter(adapter6);
-
+**/
     }
 
     public void agregarEstablecimiento(View view)
@@ -300,7 +297,7 @@ public class CrearEventoActivity extends AppCompatActivity {
                         nombreContacto = cursor.getString(0);
                         idContact = cursor.getString(1);
                         Log.d("INVITADOS", "Nombre " + (nombreContacto));
-                        GoPartY.getInstance().getEventoActual().getInvitaciones().add(new Invitacion(idContact, nombreContacto));
+                       //GoPartY.getInstance().getEventoActual().getInvitaciones().add(new Invitacion(idContact, nombreContacto));
                         actualizarPantalla();
 
 
@@ -426,7 +423,7 @@ public class CrearEventoActivity extends AppCompatActivity {
     {
 
         super.onDestroy();
-        GoPartY.getInstance().guardar();
+     //   GoPartY.getInstance().guardar();
     }
 
 }

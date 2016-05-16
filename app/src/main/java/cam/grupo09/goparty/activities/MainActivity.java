@@ -3,6 +3,8 @@ package cam.grupo09.goparty.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,14 +24,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import cam.grupo09.goparty.PersistenciaORMDTOS.EventoDTO;
+import cam.grupo09.goparty.PersistenciaORMDTOS.UsuarioDTO;
 import cam.grupo09.goparty.R;
 import cam.grupo09.goparty.backGround.ConsultaWEB;
 import cam.grupo09.goparty.backGround.WebListenerQuery;
 
 
 import cam.grupo09.goparty.mundo.GoPartY;
-import cam.grupo09.goparty.mundoGoParty.EventoDTO;
-import cam.grupo09.goparty.mundoGoParty.UsuarioDTO;
 import cam.grupo09.goparty.persistenciaORMModelos.Establecimiento;
 import cam.grupo09.goparty.persistenciaORMModelos.EstablecimientoBebida;
 import cam.grupo09.goparty.persistenciaORMModelos.EstablecimientoMusica;
@@ -53,8 +55,12 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     public final static String QUERY_REGISTER = "Query register";
     public final static String QUERY_ESTABLECIMIENTOS = "Query establecimientos";
 
-    public final static String QUERY_ACTUALIZAR = "ACTUALIZAR::";
 
+    public final static String QUERY_ACTUALIZAR = "ACTUALIZAR::";
+    public final static String QUERY_UPLOAD_EVENT = "UPLOAD::";
+
+    private List<EventoDTO> sinReportar;
+    public static EventoDTO actual;
 
     public static SharedPreferences sharedPreferences;
 
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 
     public void guardarTodo(View view)
     {
-        GoPartY.getInstance().guardar();
+        GoPartY.getManejadorPersistencia().guardarInfo(sinReportar);
     }
 
     @Override
@@ -91,15 +97,15 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 
         }
 
-        GoPartY.getInstance().crearPersistencia(this);
+
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         lstEventos = (ListView)findViewById(R.id.lstEventos);
         lblEventos = (TextView)findViewById(R.id.lblEventos);
-        GoPartY.getInstance().getManejadorPersistencia().setPath(getFilesDir());
-        GoPartY.getInstance().getManejadorPersistencia().cargarInfor();
+        GoPartY.getManejadorPersistencia().setPath(getFilesDir());
+        GoPartY.getManejadorPersistencia().cargarInfor();
         lstEventos = (ListView)findViewById(R.id.lstEventos);
         actualizarEventos();
 
@@ -111,7 +117,31 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
         String numero = sharedPreferences.getString(NUMBER_VALUE, "00000000000");
         ConsultaWEB consultaWEB = new ConsultaWEB(null,"https://gopartyserver.herokuapp.com/users/evento/"+numero,"GET",this,"EVENTOS" );
 //        consultaWEB.execute();
+    }
 
+    public void guardarEventoActual()
+    {
+        sinReportar.add(actual);
+        actual = null;
+    }
+
+
+    boolean isNetworkConnectionAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if (info == null) return false;
+        NetworkInfo.State network = info.getState();
+        return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
+    }
+
+    public void reportarEvento(View view)
+    {
+        if(isNetworkConnectionAvailable())
+        {
+            ObjectMapper map = new ObjectMapper();
+            ConsultaWEB consultaWEB = new ConsultaWEB(null,"https://gopartyserver.herokuapp.com/users/evento","POST",this,"EVENTOS" );
+
+        }
     }
 
     public void actualizarBD(View view)
@@ -157,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 
     public void crearEvento(View v)
     {
-        GoPartY.getInstance().empezarEventoActivity();
+        actual = new EventoDTO();
         startActivity(new Intent(this, CrearEventoActivity.class));
     }
 
@@ -168,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     {
         super.onDestroy();
         SugarContext.terminate();
-        GoPartY.getInstance().guardar();
+        GoPartY.getManejadorPersistencia().guardarInfo(sinReportar);
 
     }
 
@@ -196,8 +226,8 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
 
 
             }
-            if (!eventos.isEmpty())
-                GoPartY.getInstance().getPersistenceManager().actuaizarTabla(eventos);
+            //if (!eventos.isEmpty())
+              //  GoPartY.getInstance().getPersistenceManager().actuaizarTabla(eventos);
 
             actualizarEventos();
         }

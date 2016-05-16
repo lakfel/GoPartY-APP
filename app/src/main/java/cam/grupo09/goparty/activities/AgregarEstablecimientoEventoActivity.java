@@ -78,25 +78,15 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
     public void visitarEstablecimiento(View view) {
         if (posSeleccionada >= 0) {
             Intent n = new Intent(this, VerEstablecimientosActivity.class);
-            n.putExtra("establecimiento", lstResultados.getItemAtPosition(posSeleccionada).toString());
+
+            n.putExtra("establecimiento", ((Establecimiento)lstResultados.getItemAtPosition(posSeleccionada)).getId());
             startActivity(n);
         }
     }
 
     public void agregarEstablecimientoAlEvento(View view) {
         if (posSeleccionada >= 0) {
-            /**Establecimiento est = (Establecimiento) lstResultados.getItemAtPosition(posSeleccionada);
-            Evento ev = GoPartY.getInstance().getEventoActual();
-            if (ev != null) {
-                if (!ev.estaEstablecimento(est.getNombre())) {
-                    Log.d("Agregando ", est.getNombre());
-                    ev.getEstablecimientosPropuestos().add(new OpcionPropuesta<Establecimiento>(est));
 
-                    showDialog("Nuevo establecimiento", "Se agregó el establecimiento " + est.getNombre());
-                } else {
-                    showDialog("Nuevo establecimiento", "El establecimiento " + est.getNombre() + "ya se había propuesto en este evento");
-                }
-            }**/
         }
     }
 
@@ -147,8 +137,9 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
                 if(bebi.getIdEstablecimiento() == musi.getIdEstablecimiento())
                 {
 
-                    Establecimiento n = Establecimiento.findById(Establecimiento.class, bebi.getIdEstablecimiento());
-                    if(n!=null)result.add(n);
+                    List<Establecimiento> n = Establecimiento.find(Establecimiento.class, "id_Establecimiento = ?","" + bebi.getIdEstablecimiento());
+                    Log.i("Agregado al resultado", "SI " + n.size());
+                    if(n!=null)result.addAll(n);
                 }
 
             }
