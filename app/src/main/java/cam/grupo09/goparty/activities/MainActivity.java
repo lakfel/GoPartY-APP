@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
     {
         super.onCreate(savedInstanceState);
         SugarContext.init(this);
-        actualizarEventos();
+
 
         if(sharedPreferences == null)
         {
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
         GoPartY.getInstance().getManejadorPersistencia().setPath(getFilesDir());
         GoPartY.getInstance().getManejadorPersistencia().cargarInfor();
         lstEventos = (ListView)findViewById(R.id.lstEventos);
-
+        actualizarEventos();
 
     }
 

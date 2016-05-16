@@ -120,9 +120,9 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
     {
 
         List<EstablecimientoBebida> conBeidas = EstablecimientoBebida.find(EstablecimientoBebida.class
-                                                ,"idBebida = ?",spTipoBebidas.getSelectedItem().toString());
+                                                ,"id_Bebida = ?",spTipoBebidas.getSelectedItem().toString());
         List<EstablecimientoMusica> conMusica = EstablecimientoBebida.find(EstablecimientoMusica.class
-                , "idMusica = ?", spTipoMusica.getSelectedItem().toString());
+                , "id_Musica = ?", spTipoMusica.getSelectedItem().toString());
 
 
         List<Establecimiento> result = new ArrayList<Establecimiento>();
