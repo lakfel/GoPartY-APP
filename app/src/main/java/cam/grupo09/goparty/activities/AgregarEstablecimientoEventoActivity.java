@@ -122,18 +122,30 @@ public class AgregarEstablecimientoEventoActivity extends AppCompatActivity {
         List<EstablecimientoBebida> conBeidas = EstablecimientoBebida.find(EstablecimientoBebida.class
                                                 ,"idBebida = ?",spTipoBebidas.getSelectedItem().toString());
         List<EstablecimientoMusica> conMusica = EstablecimientoBebida.find(EstablecimientoMusica.class
-                ,"idMusica = ?",spTipoMusica.getSelectedItem().toString());
+                , "idMusica = ?", spTipoMusica.getSelectedItem().toString());
+
+
+        List<Establecimiento> result = new ArrayList<Establecimiento>();
+        for (int i = 0;i < conBeidas.size();i++)
+        {
+            EstablecimientoBebida bebi = conBeidas.get(i);
+            for (int j = 0;j < conMusica.size();j++)
+            {
+                EstablecimientoMusica musi = conMusica.get(i);
+                if(bebi.getIdEstablecimiento() == musi.getIdEstablecimiento())
+                {
+                    Establecimiento n = Establecimiento.findById(Establecimiento.class, bebi.getIdEstablecimiento());
+                    if(n!=null)result.add(n);
+                }
+
+            }
+        }
 
 
 
-
-        ArrayList<Establecimiento> busqueda = GoPartY.getInstance().darBusquedaFiltrada(
-                txtNombre.getText().toString(), txtDescripcion.getText().toString(),
-                spTipoMusica.getSelectedItem().toString(), spTipoBebidas.getSelectedItem().toString(), 0);
-
-        ArrayAdapter<Establecimiento> adapter = new ArrayAdapter<Establecimiento>(this, R.layout.lista_item, R.id.label, busqueda);
+        ArrayAdapter<Establecimiento> adapter = new ArrayAdapter<Establecimiento>(this, R.layout.lista_item, R.id.label, result);
         lstResultados.setAdapter(adapter);
-         **/
+
     }
 
     @Override
