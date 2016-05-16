@@ -28,5 +28,6 @@ dependencies {
     compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
     compile 'com.github.satyan:sugar:1.4'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
+    compile 'com.google.android.gms:play-services:8.4.0'
 
 }
