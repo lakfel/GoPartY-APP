@@ -17,6 +17,7 @@ import cam.grupo09.goparty.mundo.Establecimiento;
 import cam.grupo09.goparty.mundo.Evento;
 import cam.grupo09.goparty.mundo.GoPartY;
 import cam.grupo09.goparty.persistencia.ManejadorPersistencia;
+import cam.grupo09.goparty.persistencia.PersistenceManager;
 
 /**
  * Created by mike on 3/3/2016.
@@ -49,6 +50,7 @@ public class VerEstablecimientosActivity extends AppCompatActivity {
         String nombre=info.getStringExtra("establecimiento");
         ManejadorPersistencia mp= GoPartY.getInstance().getManejadorPersistencia();
         Establecimiento est= mp.darEtablecimientoNombre(nombre);
+
 
         lblNombre.setText(est.getNombre());
         lblCover.setText(String.valueOf(est.getCostoCover()));

@@ -13,6 +13,8 @@ import cam.grupo09.goparty.Enumerables.TipoMusica;
 public class Establecimiento implements Serializable
 {
     private static final long serialVersionUID = 0L;
+
+    private String id;
     /**
      * Nombre del establecimiento
      */
@@ -130,4 +132,13 @@ public class Establecimiento implements Serializable
     public String toString() {
         return nombre;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }

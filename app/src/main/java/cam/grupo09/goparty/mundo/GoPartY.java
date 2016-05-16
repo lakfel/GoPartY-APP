@@ -1,5 +1,6 @@
 package cam.grupo09.goparty.mundo;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import cam.grupo09.goparty.Enumerables.TipoBebida;
 import cam.grupo09.goparty.Enumerables.TipoMusica;
 import cam.grupo09.goparty.persistencia.ManejadorPersistencia;
+import cam.grupo09.goparty.persistencia.PersistenceManager;
 
 /**
  * Created by Felipe on 29/02/2016.
@@ -20,7 +22,7 @@ public class GoPartY {
 
     private ManejadorPersistencia manejadorPersistencia;
     private Evento eventoActual;
-
+    private PersistenceManager persistenceManager;
 
 
     public static GoPartY getInstance()
@@ -32,6 +34,23 @@ public class GoPartY {
         return instance;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void crearPersistencia(Context context)
+    {
+        persistenceManager = new PersistenceManager(context);
+    }
 
     public void guardar()
     {
@@ -45,13 +64,21 @@ public class GoPartY {
 
     public GoPartY()
     {
+
         manejadorPersistencia = new ManejadorPersistencia();
     }
+
+
+
+
+
+
 
     public ManejadorPersistencia getManejadorPersistencia()
     {
         return manejadorPersistencia;
     }
+    public PersistenceManager getPersistenceManager(){return persistenceManager;}
 
     public Evento getEventoActual()
     {

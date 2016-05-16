@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -44,7 +46,18 @@
         <activity
             android:name=".activities.VerEstablecimientosActivity"
             android:label="@string/title_activity_ver_establecimiento"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.RegistroNuemeroActivity"
+            android:label="@string/title_activity_registro_nuemero"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <meta-data android:name="DATABASE" android:value="cam09GoParty.db" />
+        <meta-data android:name="VERSION" android:value="2" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="cam.grupo09.goparty.persistenciaORMModelos" />
+
+
     </application>
 
 </manifest>

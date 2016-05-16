@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import cam.grupo09.goparty.Enumerables.EstadoEvento;
+
 /**
  * Created by Felipe on 29/02/2016.
  * Clase que representa un evento.
@@ -23,6 +25,7 @@ public class Evento implements Serializable
      */
     private String nombreEvento;
 
+    private String descripcion;
     /**
      * Fecha seleccionada para el evento.
      */
@@ -35,6 +38,10 @@ public class Evento implements Serializable
     private String horaSalidaSeleccionada;
 
     private Establecimiento establecimientoSeleccionado;
+
+    private EstadoEvento estado;
+
+
 
     /**
      * Lista de invitaciones al evento
@@ -73,6 +80,13 @@ public class Evento implements Serializable
 
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
     public String getNombreEvento() {
         return nombreEvento;
@@ -247,4 +261,13 @@ public class Evento implements Serializable
     public String toString() {
         return "Evento : " + nombreEvento;
     }
+
+    public EstadoEvento getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoEvento estado) {
+        this.estado = estado;
+    }
+
 }

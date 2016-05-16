@@ -36,7 +36,7 @@ public class ManejadorPersistencia
     }
 
 
-    public void     guardarInfo()
+    public void    guardarInfo()
     {
         Log.d("ManejadorPersistencia","Guardando");
         try
