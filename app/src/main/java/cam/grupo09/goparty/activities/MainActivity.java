@@ -242,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
                         Establecimiento establecimiento = map.readValue(response.get(i).toString(),Establecimiento.class);
                         establecimiento.save();
                     }
+                    Log.i("GUARDANDO ESTABS ", Establecimiento.listAll(Establecimiento.class).size() + "");
                 }
                 else if (tabla.equals("establecimientoBebida"))
                 {
@@ -254,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements WebListenerQuery
                 }
                 else if (tabla.equals("establecimientoMusica"))
                 {
-                    EstablecimientoMusica.deleteAll(Establecimiento.class);
+                    EstablecimientoMusica.deleteAll(EstablecimientoMusica.class);
                     for (int i = 0; i < response.length(); i++)
                     {
                         EstablecimientoMusica establecimiento = map.readValue(response.get(i).toString(),EstablecimientoMusica.class);
